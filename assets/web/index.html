@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pyramid">
+<meta name="theme-color" content="#0b0713">
+<link href="./fonts.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;width:100%;background:#0b0713;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+input{font-family:inherit}
+button{font-family:inherit}
+::-webkit-scrollbar{width:0;height:0}
+@keyframes glowpulse{0%,100%{box-shadow:0 0 0 2px #ffd23f,0 0 9px 1px rgba(255,210,63,.3)}50%{box-shadow:0 0 0 2px #ffd23f,0 0 15px 4px rgba(255,210,63,.55)}}
+@keyframes sheetup{from{transform:translateY(102%)}to{transform:translateY(0)}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-10px) rotate(8deg)}}
+@keyframes popin{0%{transform:scale(.6)}70%{transform:scale(1.06)}100%{transform:scale(1)}}
+</style>
+</helmet>
+
+<!-- ===================== SÍMBOLOS BARAJA ESPAÑOLA (SVG) ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="s-oro" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="#e3b23f" stroke="#8a5a12" stroke-width="3.5"/>
+    <circle cx="50" cy="50" r="45" fill="none" stroke="#f4d67e" stroke-width="1.4"/>
+    <circle cx="50" cy="50" r="34" fill="none" stroke="#8a5a12" stroke-width="2"/>
+    <path d="M50 26 L55 45 L74 50 L55 55 L50 74 L45 55 L26 50 L45 45 Z" fill="#8a5a12"/>
+    <circle cx="50" cy="50" r="5" fill="#e3b23f"/>
+    <circle cx="50" cy="15" r="2.4" fill="#8a5a12"/><circle cx="50" cy="85" r="2.4" fill="#8a5a12"/>
+    <circle cx="15" cy="50" r="2.4" fill="#8a5a12"/><circle cx="85" cy="50" r="2.4" fill="#8a5a12"/>
+  </symbol>
+  <symbol id="s-copa" viewBox="0 0 100 100">
+    <path d="M25 29 L75 29 C73 53 62 66 50 66 C38 66 27 53 25 29 Z" fill="#c0392b" stroke="#7a1e1e" stroke-width="2.6"/>
+    <ellipse cx="50" cy="30" rx="25" ry="5.5" fill="#e3b23f" stroke="#7a1e1e" stroke-width="1.4"/>
+    <path d="M40 45 C44 55 56 55 60 45" fill="none" stroke="#e3b23f" stroke-width="2.2"/>
+    <rect x="45" y="65" width="10" height="13" fill="#e3b23f"/>
+    <circle cx="50" cy="72" r="5" fill="#c78f2a"/>
+    <path d="M33 92 L67 92 L60 79 L40 79 Z" fill="#e3b23f" stroke="#7a1e1e" stroke-width="1.6"/>
+    <ellipse cx="50" cy="92" rx="19" ry="4.5" fill="#c78f2a" stroke="#7a1e1e" stroke-width="1.2"/>
+  </symbol>
+  <symbol id="s-espada" viewBox="0 0 100 100">
+    <path d="M50 8 L57 27 L54 61 L46 61 L43 27 Z" fill="#8398bf" stroke="#3f5478" stroke-width="2.2"/>
+    <path d="M50 10 L50 60" stroke="#ccd8ee" stroke-width="2"/>
+    <rect x="29" y="60" width="42" height="8.5" rx="3.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.6"/>
+    <circle cx="29" cy="64" r="4.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.4"/>
+    <circle cx="71" cy="64" r="4.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.4"/>
+    <rect x="45" y="68" width="10" height="18" fill="#7a4a12"/>
+    <circle cx="50" cy="88" r="6.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="s-basto" viewBox="0 0 100 100">
+    <path d="M46 92 L44 47 C44 31 39 23 50 12 C61 23 56 31 56 47 L54 92 Z" fill="#8f5f28" stroke="#5a3612" stroke-width="2.6"/>
+    <circle cx="43" cy="42" r="5.5" fill="#8f5f28" stroke="#5a3612" stroke-width="2.2"/>
+    <circle cx="58" cy="55" r="5.5" fill="#8f5f28" stroke="#5a3612" stroke-width="2.2"/>
+    <circle cx="45" cy="68" r="4.5" fill="#8f5f28" stroke="#5a3612" stroke-width="2"/>
+    <path d="M50 15 C39 5 27 8 25 17 C34 22 46 20 50 15 Z" fill="#2f7d46" stroke="#1f5730" stroke-width="1.4"/>
+    <path d="M50 15 C61 5 73 8 75 17 C66 22 54 20 50 15 Z" fill="#3a9457" stroke="#1f5730" stroke-width="1.4"/>
+    <path d="M49 33 L49 86" stroke="#5a3612" stroke-width="1.3" fill="none" opacity="0.55"/>
+  </symbol>
+  <symbol id="fig-sota" viewBox="0 0 120 170">
+    <rect x="45" y="118" width="12" height="36" fill="#3a2c1c"/>
+    <rect x="63" y="118" width="12" height="36" fill="#3a2c1c"/>
+    <path d="M40 154 h22 v7 h-26 z" fill="#241a10"/>
+    <path d="M58 154 h22 v7 h-26 z" fill="#241a10"/>
+    <path d="M37 60 L83 60 L93 124 L27 124 Z" fill="currentColor" stroke="#2a2118" stroke-width="2"/>
+    <path d="M37 62 L26 98 L35 100 L46 66 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M83 62 L94 98 L85 100 L74 66 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <circle cx="30" cy="100" r="6" fill="#efdcc0" stroke="#2a2118" stroke-width="1.4"/>
+    <circle cx="90" cy="100" r="6" fill="#efdcc0" stroke="#2a2118" stroke-width="1.4"/>
+    <rect x="29" y="99" width="62" height="9" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.2"/>
+    <path d="M60 60 L60 99" stroke="#e3b23f" stroke-width="3.5"/>
+    <rect x="53" y="47" width="14" height="16" fill="#efdcc0"/>
+    <circle cx="60" cy="35" r="16" fill="#efdcc0" stroke="#2a2118" stroke-width="1.6"/>
+    <circle cx="54" cy="34" r="1.8" fill="#2a2118"/><circle cx="66" cy="34" r="1.8" fill="#2a2118"/>
+    <path d="M40 29 C42 12 78 12 80 29 C71 22 49 22 40 29 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M60 13 L60 4" stroke="#8a5a12" stroke-width="2"/>
+    <circle cx="60" cy="4" r="4.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.2"/>
+  </symbol>
+  <symbol id="fig-caballo" viewBox="0 0 120 170">
+    <path d="M70 104 L112 50" stroke="#b3893c" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M112 50 l-3 -12 l10 5 z" fill="#c3c9d4" stroke="#5b6472" stroke-width="1.2"/>
+    <rect x="42" y="128" width="8" height="30" fill="#8a6636"/>
+    <rect x="55" y="130" width="8" height="28" fill="#75592c"/>
+    <rect x="78" y="130" width="8" height="28" fill="#75592c"/>
+    <rect x="88" y="128" width="8" height="30" fill="#8a6636"/>
+    <rect x="41" y="156" width="10" height="5" fill="#3a2c1c"/>
+    <rect x="87" y="156" width="10" height="5" fill="#3a2c1c"/>
+    <ellipse cx="64" cy="116" rx="35" ry="19" fill="#b98a4e" stroke="#6e4c22" stroke-width="2.2"/>
+    <path d="M96 105 C111 109 111 135 100 143 C105 128 100 116 91 114 Z" fill="#8a6636" stroke="#6e4c22" stroke-width="1.4"/>
+    <path d="M40 111 L29 82 L46 77 L55 106 Z" fill="#b98a4e" stroke="#6e4c22" stroke-width="2.2"/>
+    <path d="M46 79 L21 73 L9 84 L14 95 L31 95 L49 92 Z" fill="#b98a4e" stroke="#6e4c22" stroke-width="2.2"/>
+    <path d="M40 77 L45 66 L51 78 Z" fill="#b98a4e" stroke="#6e4c22" stroke-width="1.6"/>
+    <path d="M45 77 L52 106 L45 106 L38 80 Z" fill="#6e4c22"/>
+    <circle cx="25" cy="84" r="2.4" fill="#2a2118"/>
+    <path d="M48 108 L84 108 L80 123 L52 123 Z" fill="currentColor" stroke="#8a5a12" stroke-width="1.6"/>
+    <path d="M56 92 L76 92 L80 114 L52 114 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M72 95 L76 106 L67 107 L64 97 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.2"/>
+    <circle cx="66" cy="79" r="11" fill="#efdcc0" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M54 75 C56 60 76 60 78 75 C70 68 62 68 54 75 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M78 66 L90 60" stroke="#c0392b" stroke-width="3.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="fig-rey" viewBox="0 0 120 170">
+    <path d="M30 62 L90 62 L100 158 L20 158 Z" fill="currentColor" stroke="#2a2118" stroke-width="2"/>
+    <path d="M60 62 L60 158" stroke="#f2ead6" stroke-width="9"/>
+    <path d="M60 62 L60 158" stroke="#2a2118" stroke-width="1" opacity="0.28"/>
+    <path d="M56 90 h8 M56 106 h8 M56 122 h8 M56 138 h8" stroke="#2a2118" stroke-width="1" opacity="0.4"/>
+    <path d="M30 64 L21 112 L34 114 L45 70 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M90 64 L99 112 L86 114 L75 70 Z" fill="currentColor" stroke="#2a2118" stroke-width="1.6"/>
+    <rect x="93" y="42" width="4.5" height="74" rx="2" fill="#e3b23f" stroke="#8a5a12" stroke-width="1"/>
+    <circle cx="95.2" cy="40" r="6.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.4"/>
+    <circle cx="25" cy="114" r="7.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.4"/>
+    <path d="M25 106 L25 100" stroke="#8a5a12" stroke-width="2"/>
+    <path d="M42 60 L78 60 L72 76 L48 76 Z" fill="#f2ead6" stroke="#2a2118" stroke-width="1.6"/>
+    <circle cx="60" cy="41" r="16" fill="#efdcc0" stroke="#2a2118" stroke-width="1.6"/>
+    <path d="M48 46 C50 66 70 66 72 46 C67 56 53 56 48 46 Z" fill="#eae2d2" stroke="#2a2118" stroke-width="1.2"/>
+    <circle cx="54" cy="40" r="1.8" fill="#2a2118"/><circle cx="66" cy="40" r="1.8" fill="#2a2118"/>
+    <path d="M40 27 L47 11 L54 24 L60 8 L66 24 L73 11 L80 27 Z" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.6"/>
+    <rect x="40" y="27" width="40" height="7" rx="1.5" fill="#e3b23f" stroke="#8a5a12" stroke-width="1.6"/>
+    <circle cx="47" cy="11" r="3.2" fill="#c0392b"/>
+    <circle cx="60" cy="8" r="3.2" fill="#c0392b"/>
+    <circle cx="73" cy="11" r="3.2" fill="#c0392b"/>
+    <circle cx="60" cy="31" r="2.4" fill="#c0392b"/>
+  </symbol>
+</defs></svg>
+
+<sc-if value="{{ isApp }}">
+<div style="position:relative;width:100%;height:100dvh;overflow:hidden;color:#f5f0ff;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:radial-gradient(120% 90% at 10% -10%, rgba(255,45,149,.20), transparent 55%), radial-gradient(120% 90% at 100% 112%, rgba(0,229,255,.16), transparent 55%), #0b0713;">
+
+  <sc-if value="{{ isPortraitBlocked }}">
+    <div style="position:absolute;inset:0;z-index:60;background:#0b0713;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:30px">
+      <div style="font-size:52px;animation:floaty 1.8s infinite">📱</div>
+      <div style="font-family:'Unbounded';font-weight:700;font-size:22px">{{ portraitTitle }}</div>
+      <div style="color:#a99fc4;font-size:14px;max-width:240px">{{ portraitText }}</div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== MENÚ HAMBURGUESA (portada) ===================== -->
+  <sc-if value="{{ showHamBtn }}">
+    <button onClick="{{ onHamOpen }}" style="position:absolute;top:max(12px,env(safe-area-inset-top));left:max(14px,env(safe-area-inset-left));z-index:55;display:flex;flex-direction:column;gap:4px;justify-content:center;background:none;border:none;padding:9px;cursor:pointer">
+      <span style="display:block;width:22px;height:2.5px;border-radius:2px;background:#f5f0ff"></span>
+      <span style="display:block;width:22px;height:2.5px;border-radius:2px;background:#f5f0ff"></span>
+      <span style="display:block;width:22px;height:2.5px;border-radius:2px;background:#f5f0ff"></span>
+    </button>
+  </sc-if>
+  <sc-if value="{{ hamMenuOpen }}">
+    <div onClick="{{ onHamClose }}" style="position:absolute;inset:0;z-index:70;background:rgba(5,3,10,.62);display:flex;align-items:flex-end;justify-content:center">
+      <div onClick="{{ onSheetTap }}" style="width:100%;max-width:560px;max-height:92%;overflow:auto;background:linear-gradient(180deg,#1e1438,#17102a);border:1px solid rgba(255,255,255,.1);border-bottom:none;border-top-left-radius:22px;border-top-right-radius:22px;box-shadow:0 -20px 60px rgba(0,0,0,.6);padding:16px 18px 22px;animation:sheetup .26s cubic-bezier(.2,.85,.25,1)">
+        <div onTouchStart="{{ onMenuSwipeStart }}" onTouchEnd="{{ onMenuSwipeEnd }}" style="display:flex;justify-content:center;padding:0 0 14px;touch-action:none">
+          <div style="width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,.2)"></div>
+        </div>
+
+        <sc-if value="{{ hamViewMain }}">
+          <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:16px">{{ menuTitle }}</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button onClick="{{ onHamHow }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:600;color:#f5f0ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"><span style="width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(135deg,#ff2d95,#ffd23f);box-shadow:0 4px 14px rgba(255,45,149,.35)">▲</span>{{ howToPlayLabel }}</button>
+            <button onClick="{{ onHamLang }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:600;color:#f5f0ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"><span style="width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;background:#191024;color:#f5f0ff"><svg viewBox="0 0 24 24" style="width:20px;height:20px"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1"/><ellipse cx="12" cy="12" rx="3.6" ry="8.4" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M3.6 12H20.4M6.2 7.2H17.8M6.2 16.8H17.8" stroke="currentColor" stroke-width=".8"/></svg></span>{{ languageTitle }}</button>
+            <button onClick="{{ onHamPrivacy }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:600;color:#f5f0ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"><span style="width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(135deg,#a855f7,#ff6ab0);box-shadow:0 4px 14px rgba(168,85,247,.35)">🔒</span>{{ privacyTitle }}</button>
+            <sc-if value="{{ showHamHome }}">
+              <button onClick="{{ onHamGoHome }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:600;color:#f5f0ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"><span style="width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(135deg,#00e5ff,#3ddc97);box-shadow:0 4px 14px rgba(0,229,255,.35)">⟲</span>{{ homeMenuLabel }}</button>
+            </sc-if>
+          </div>
+          <div style="text-align:center;color:#5f5580;font-size:12px;margin-top:16px;letter-spacing:1px">{{ appVersion }}</div>
+        </sc-if>
+
+        <sc-if value="{{ hamViewHow }}">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <button onClick="{{ onHamBack }}" style="background:none;border:none;color:#00e5ff;font-size:14px;font-weight:700;padding:6px 4px;cursor:pointer">← {{ backLabel }}</button>
+          </div>
+          <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:14px">{{ howToPlayLabel }}</div>
+          <div style="color:#d8cffb;font-size:13.5px;line-height:1.6;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ howLines }}" as="line" hint-placeholder-count="6">
+              <div>{{ line }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hamViewPrivacy }}">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <button onClick="{{ onHamBack }}" style="background:none;border:none;color:#00e5ff;font-size:14px;font-weight:700;padding:6px 4px;cursor:pointer">← {{ backLabel }}</button>
+          </div>
+          <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:14px">{{ privacyTitle }}</div>
+          <div style="color:#d8cffb;font-size:13.5px;line-height:1.6;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ privacyLines }}" as="line" hint-placeholder-count="3">
+              <div>{{ line }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== SELECTOR DE IDIOMA ===================== -->
+  <sc-if value="{{ showLangBtn }}">
+    <button onClick="{{ onLangOpen }}" style="position:absolute;top:max(12px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));z-index:55;display:flex;align-items:center;gap:7px;background:none;border:none;color:#f5f0ff;padding:7px 6px;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;text-shadow:0 2px 8px rgba(0,0,0,.5)">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="12" cy="12" rx="3.6" ry="8.4" fill="none" stroke="currentColor" stroke-width="1"/><path d="M3.6 12H20.4" stroke="currentColor" stroke-width="1"/></svg>{{ langLabel }}
+    </button>
+  </sc-if>
+  <sc-if value="{{ langOpen }}">
+    <div onClick="{{ onLangClose }}" style="position:absolute;inset:0;z-index:70;background:rgba(5,3,10,.62);display:flex;align-items:flex-end;justify-content:center">
+      <div onClick="{{ onSheetTap }}" style="width:100%;max-width:560px;max-height:92%;overflow:auto;background:linear-gradient(180deg,#1e1438,#17102a);border:1px solid rgba(255,255,255,.1);border-bottom:none;border-top-left-radius:22px;border-top-right-radius:22px;box-shadow:0 -20px 60px rgba(0,0,0,.6);padding:16px 18px 22px;animation:sheetup .26s cubic-bezier(.2,.85,.25,1)">
+        <div style="width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,.2);margin:0 auto 14px"></div>
+        <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:3px">{{ languageTitle }}</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ langOptions }}" as="l" hint-placeholder-count="6">
+            <button onClick="{{ l.onClick }}" style="{{ l.style }}">
+              <span style="font-size:23px;line-height:1;flex:none">{{ l.flag }}</span>
+              <span style="flex:1;text-align:left;font-weight:600;font-size:15px">{{ l.name }}</span>
+              <span style="{{ l.codeStyle }}">{{ l.code }}</span>
+              {{ l.check }}
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== ELECCIÓN DE MODALIDAD ===================== -->
+  <sc-if value="{{ isMode }}">
+    <div style="height:100%;display:flex;gap:22px;padding:22px max(28px,env(safe-area-inset-right)) 22px max(34px,env(safe-area-inset-left));overflow:hidden">
+      <div style="width:36%;min-width:230px;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-right:20px;border-right:1px solid rgba(255,255,255,.08)">
+        <div style="font-family:'Unbounded';font-weight:800;font-size:clamp(31px,7vh,54px);letter-spacing:-2px;line-height:.9;background:linear-gradient(92deg,#ff2d95,#ffd23f 55%,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 22px rgba(255,45,149,.35))">{{ title }}</div>
+        <div style="color:#a99fc4;font-size:11px;letter-spacing:4px;text-transform:uppercase">{{ gameTagline }}</div>
+        <div style="color:#7a7099;font-size:13px;line-height:1.55;max-width:285px">{{ modeIntro }}</div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:12px;max-width:580px">
+        <div style="font-family:'Unbounded';font-weight:700;font-size:clamp(18px,4vh,27px);letter-spacing:-.7px">{{ modeTitle }}</div>
+        <button onClick="{{ onChooseLocal }}" style="display:flex;align-items:center;gap:16px;text-align:left;padding:17px 19px;border-radius:17px;cursor:pointer;color:#f5f0ff;background:linear-gradient(120deg,rgba(255,45,149,.17),rgba(168,85,247,.1));border:1px solid rgba(255,45,149,.48);box-shadow:0 12px 30px rgba(255,45,149,.15)">
+          <span style="width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:none;font-size:25px;background:linear-gradient(135deg,#ff2d95,#a855f7)">📱</span>
+          <span style="min-width:0"><span style="display:block;font-family:'Unbounded';font-weight:700;font-size:15px">{{ localModeTitle }}</span><span style="display:block;margin-top:5px;color:#cbbde8;font-size:12px;line-height:1.4">{{ localModeText }}</span></span>
+          <span style="margin-left:auto;color:#ff6ab0;font-size:20px">›</span>
+        </button>
+        <button onClick="{{ onChooseOnline }}" style="display:flex;align-items:center;gap:16px;text-align:left;padding:17px 19px;border-radius:17px;cursor:pointer;color:#f5f0ff;background:linear-gradient(120deg,rgba(0,229,255,.14),rgba(61,220,151,.08));border:1px solid rgba(0,229,255,.42);box-shadow:0 12px 30px rgba(0,229,255,.1)">
+          <span style="width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:none;font-size:25px;background:linear-gradient(135deg,#00bcd4,#3ddc97)">👥</span>
+          <span style="min-width:0"><span style="display:block;font-family:'Unbounded';font-weight:700;font-size:15px">{{ onlineModeTitle }}</span><span style="display:block;margin-top:5px;color:#bde7e9;font-size:12px;line-height:1.4">{{ onlineModeText }}</span></span>
+          <span style="margin-left:auto;color:#00e5ff;font-size:20px">›</span>
+        </button>
+        <div style="color:#71678f;font-size:11px;line-height:1.45;padding:0 3px">{{ noAccountNote }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== SALA MULTIJUGADOR ===================== -->
+  <sc-if value="{{ isOnline }}">
+    <div style="height:100%;display:flex;gap:22px;padding:22px max(28px,env(safe-area-inset-right)) 22px max(34px,env(safe-area-inset-left));overflow:hidden">
+      <div style="width:34%;min-width:220px;display:flex;flex-direction:column;justify-content:center;gap:14px;padding-right:20px;border-right:1px solid rgba(255,255,255,.08)">
+        <button onClick="{{ onOnlineBack }}" style="align-self:flex-start;background:none;border:none;padding:4px 0;color:#00e5ff;font-size:13px;font-weight:700;cursor:pointer">← {{ backLabel }}</button>
+        <div style="font-family:'Unbounded';font-weight:800;font-size:clamp(29px,6.2vh,47px);letter-spacing:-2px;line-height:.9;background:linear-gradient(92deg,#ff2d95,#ffd23f 55%,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent">{{ title }}</div>
+        <div style="color:#a99fc4;font-size:13px;line-height:1.5">{{ onlineIntro }}</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;border-radius:11px;padding:9px 10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.16);color:#8bcbd1;font-size:11px;line-height:1.45"><span style="font-size:15px">✦</span><span>{{ noAccountNote }}</span></div>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;align-items:center;justify-content:center">
+        <sc-if value="{{ onlineChoosing }}">
+          <div style="width:min(510px,100%);display:flex;flex-direction:column;gap:12px">
+            <div style="font-family:'Unbounded';font-weight:800;font-size:clamp(22px,4.5vh,31px);letter-spacing:-1px;line-height:.95;background:linear-gradient(92deg,#00e5ff,#3ddc97 55%,#ffd23f);-webkit-background-clip:text;background-clip:text;color:transparent">{{ onlineTitle }}</div>
+            <div style="display:flex;align-items:center;border-radius:14px;padding:11px 13px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13)">
+              <input value="{{ onlineName }}" onInput="{{ onOnlineName }}" maxlength="20" placeholder="{{ onlineNamePlaceholder }}" aria-label="{{ onlineNamePlaceholder }}" style="flex:1;min-width:0;background:transparent;border:none;outline:none;color:#f5f0ff;font-size:16px;font-weight:600" />
+            </div>
+            <button onClick="{{ onCreateRoom }}" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;cursor:pointer;background:linear-gradient(92deg,#00bcd4,#3ddc97);border:none;color:#06271f;font-family:'Unbounded';font-weight:700;font-size:14px"><span style="font-size:19px">＋</span>{{ createRoomLabel }}</button>
+            <div style="display:flex;align-items:center;gap:10px;margin:3px 0;color:#756b91;font-size:11px;letter-spacing:2px;text-transform:uppercase"><span style="height:1px;flex:1;background:rgba(255,255,255,.1)"></span>{{ orLabel }}<span style="height:1px;flex:1;background:rgba(255,255,255,.1)"></span></div>
+            <div style="display:flex;gap:9px;align-items:stretch">
+              <input value="{{ onlineCodeInput }}" onInput="{{ onOnlineCode }}" maxlength="6" placeholder="{{ roomCodePlaceholder }}" style="flex:1;min-width:0;min-height:50px;border-radius:13px;padding:10px 15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);outline:none;color:#f5f0ff;font-family:'Unbounded';font-weight:700;font-size:18px;line-height:1.2;letter-spacing:2px;text-transform:uppercase" />
+              <button onClick="{{ onJoinRoom }}" style="min-height:50px;padding:10px 18px;border-radius:13px;cursor:pointer;background:rgba(255,45,149,.15);border:1px solid rgba(255,45,149,.48);color:#ff83bd;font-weight:800;font-size:13px">{{ joinRoomLabel }}</button>
+            </div>
+            <sc-if value="{{ onlineError }}"><div style="color:#ff83bd;font-size:12px">{{ onlineError }}</div></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ onlineRoom }}">
+          <div style="width:min(560px,100%);display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <div><div style="font-family:'Unbounded';font-weight:700;font-size:21px">{{ roomTitle }}</div><div style="margin-top:4px;color:#a99fc4;font-size:12px">{{ roomWaitingText }}</div></div>
+              <div style="padding:4px 9px;border-radius:20px;background:rgba(61,220,151,.13);border:1px solid rgba(61,220,151,.32);color:#75e8bc;font-size:11px;font-weight:700">● {{ roomMemberCount }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:15px;background:linear-gradient(120deg,rgba(255,210,63,.12),rgba(255,45,149,.08));border:1px solid rgba(255,210,63,.35)">
+              <div style="flex:1"><div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#b59b51">{{ roomCodeLabel }}</div><div style="margin-top:4px;font-family:'Unbounded';font-size:27px;font-weight:800;letter-spacing:5px;color:#ffe48b">{{ roomCode }}</div></div>
+              <div style="display:flex;gap:7px;flex:none">
+                <button onClick="{{ onCopyRoomCode }}" style="padding:9px 12px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#f5f0ff;font-size:12px;font-weight:700">{{ copyCodeLabel }}</button>
+                <button onClick="{{ onShareRoomCode }}" style="padding:9px 12px;border-radius:10px;cursor:pointer;background:rgba(61,220,151,.14);border:1px solid rgba(61,220,151,.36);color:#a4f3d0;font-size:12px;font-weight:700">↗ {{ shareCodeLabel }}</button>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:nowrap;gap:8px;min-height:42px;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:1px 2px 7px;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain">
+              <sc-for list="{{ roomMembers }}" as="p" hint-placeholder-count="3"><div style="display:flex;flex:none;align-items:center;gap:7px;padding:7px 11px 7px 7px;border-radius:24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:13px;font-weight:600;white-space:nowrap"><span style="{{ p.dotStyle }}">{{ p.initial }}</span>{{ p.name }}<sc-if value="{{ p.host }}"><span style="font-size:10px;color:#ffd23f">★</span></sc-if></div></sc-for>
+            </div>
+            <sc-if value="{{ isRoomHost }}">
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ onToggleDeck }}" style="flex:1;padding:10px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#e5ddf5;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px"><sc-if value="{{ roomDeckIsEs }}"><span style="display:inline-flex;gap:3px;align-items:center"><svg width="14" height="14" viewBox="0 0 100 100"><use href="#s-oro"></use></svg><svg width="14" height="14" viewBox="0 0 100 100"><use href="#s-copa"></use></svg><svg width="14" height="14" viewBox="0 0 100 100"><use href="#s-espada"></use></svg><svg width="14" height="14" viewBox="0 0 100 100"><use href="#s-basto"></use></svg></span></sc-if><sc-if value="{{ roomDeckIsFr }}"><span>♠ ♥ ♦ ♣</span></sc-if>{{ roomDeckText }}</button>
+                <button onClick="{{ onToggleDrinkMode }}" style="flex:1;padding:10px;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#e5ddf5;font-size:12px;font-weight:700">🍺 {{ roomDrinkModeText }}</button>
+              </div>
+              <button onClick="{{ onStartRoomGame }}" style="{{ roomStartStyle }}">{{ startRoomLabel }}</button>
+            </sc-if>
+            <sc-if value="{{ isNotRoomHost }}"><div style="text-align:center;color:#8b80a8;font-size:12px;padding:11px">{{ waitingForHostLabel }}</div></sc-if>
+            <sc-if value="{{ onlineError }}"><div style="color:#ff83bd;font-size:12px">{{ onlineError }}</div></sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== SETUP (modo + nº jugadores) ===================== -->
+  <sc-if value="{{ isSetup }}">
+    <div style="height:100%;display:flex;gap:14px;padding:14px max(18px,env(safe-area-inset-right)) 14px max(30px,env(safe-area-inset-left));overflow:hidden">
+      <!-- IZQUIERDA · hero -->
+      <div style="width:35%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:14px;padding-right:12px;border-right:1px solid rgba(255,255,255,.07)">
+        <div>
+          <div style="display:inline-block;font-family:'Unbounded';font-weight:800;font-size:clamp(28px,7vh,50px);letter-spacing:-1.5px;line-height:.9;background:linear-gradient(92deg,#ff2d95,#ffd23f 55%,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 22px rgba(255,45,149,.35))">{{ title }}</div>
+          <div style="margin-top:10px;color:#a99fc4;font-size:11px;letter-spacing:4px;text-transform:uppercase">{{ gameTagline }}</div>
+        </div>
+        <div style="color:#7a7099;font-size:12px;line-height:1.5;max-width:280px">{{ setupIntroStart }} <b style="color:#ffd23f">{{ setupIntroBold }}</b> 🍻</div>
+        <button onClick="{{ onNext }}" style="{{ nextStyle }}">{{ nextLabel }} ▶</button>
+      </div>
+      <!-- DERECHA · ajustes apilados -->
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:11px;justify-content:center">
+        <div style="background:rgba(23,16,42,.6);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="flex:none">
+            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a99fc4">{{ playersLabel }}</div>
+            <div style="font-size:11px;color:#7a7099;margin-top:3px">{{ playersRangeLabel }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px">
+            <button onClick="{{ onDecPlayers }}" style="{{ decStyle }}">−</button>
+            <div style="font-family:'Unbounded';font-weight:800;font-size:40px;line-height:1;min-width:48px;text-align:center;color:#f5f0ff">{{ playerCount }}</div>
+            <button onClick="{{ onIncPlayers }}" style="{{ incStyle }}">+</button>
+          </div>
+        </div>
+        <div style="background:rgba(23,16,42,.6);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="flex:1 1 auto;min-width:0">
+            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a99fc4">{{ deckLabel }}</div>
+            <div style="font-size:11px;color:#7a7099;margin-top:3px;line-height:1.4">{{ deckNote }}</div>
+          </div>
+          <div style="flex:none;width:178px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:9px 14px;font-size:13px;font-weight:700;color:#f5f0ff;white-space:nowrap">
+            <sc-if value="{{ deckIsEs }}">
+              <span style="display:inline-flex;gap:5px"><svg viewBox="0 0 100 100" style="width:15px;height:15px"><use href="#s-oro"></use></svg><svg viewBox="0 0 100 100" style="width:15px;height:15px"><use href="#s-copa"></use></svg><svg viewBox="0 0 100 100" style="width:15px;height:15px"><use href="#s-espada"></use></svg><svg viewBox="0 0 100 100" style="width:15px;height:15px"><use href="#s-basto"></use></svg></span>
+            </sc-if>
+            <sc-if value="{{ deckIsFr }}">
+              {{ frenchDeckLabel }}
+              <span style="font-size:14px;letter-spacing:2px;margin-left:4px">♠ ♥ ♦ ♣</span>
+            </sc-if>
+          </div>
+        </div>
+        <div style="background:rgba(23,16,42,.6);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="flex:1 1 auto;min-width:0">
+            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a99fc4">{{ drinksPerRowLabel }}</div>
+            <div style="font-size:11px;color:#a99fc4;margin-top:3px;line-height:1.4">{{ modeNote }}</div>
+          </div>
+          <div style="flex:none;width:178px;display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:9px 14px;font-size:13px;font-weight:700;color:#f5f0ff;white-space:nowrap">
+            <sc-if value="{{ modeIsDouble }}">{{ modeDoubleLabel }} <span style="font-size:10px;opacity:.75;font-weight:600">· 1·2·4·8·16</span></sc-if>
+            <sc-if value="{{ modeIsLinear }}">{{ modeLinearLabel }} <span style="font-size:10px;opacity:.75;font-weight:600">· 1·2·3·4·5</span></sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== NOMBRES DE JUGADORES ===================== -->
+  <sc-if value="{{ isPlayers }}">
+    <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:10px 14px;overflow:hidden">
+      <sc-if value="{{ showPortraitEntryButton }}">
+        <button onClick="{{ onStartPortraitEntry }}" title="{{ portraitEntryLabel }}" aria-label="{{ portraitEntryLabel }}" style="position:absolute;top:max(12px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));z-index:70;width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:rgba(23,16,42,.9);border:1px solid rgba(0,229,255,.5);box-shadow:0 8px 24px rgba(0,0,0,.35);color:#00e5ff;font-size:23px;line-height:1;cursor:pointer">↕</button>
+      </sc-if>
+      <div style="text-align:center;flex:none">
+        <div style="font-family:'Unbounded';font-weight:700;font-size:clamp(18px,3.6vh,24px);letter-spacing:-.5px;color:#f5f0ff">{{ playersTitle }}</div>
+        <div style="margin-top:3px;color:#a99fc4;font-size:10px;letter-spacing:4px;text-transform:uppercase">{{ playersSubtitle }}</div>
+      </div>
+      <div style="width:min(560px,100%);flex:1;min-height:0;background:rgba(23,16,42,.65);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;backdrop-filter:blur(8px);display:flex;flex-direction:column;min-height:0">
+        <div style="display:flex;flex-direction:column;gap:7px;flex:1;min-height:0;overflow:auto">
+          <sc-for list="{{ playersSetup }}" as="p" hint-placeholder-count="2">
+            <div style="display:flex;gap:8px;align-items:center;flex:none">
+              <span style="{{ p.circleStyle }}">{{ p.idxLabel }}</span>
+              <input data-player-input="{{ p.id }}" value="{{ p.name }}" placeholder="{{ p.placeholder }}" onInput="{{ p.onInput }}" onFocus="{{ p.onFocus }}" onBlur="{{ p.onBlur }}" onKeyDown="{{ p.onKeyDown }}" enterKeyHint="done" autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck="false" style="flex:1;min-width:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 12px;color:#f5f0ff;font-size:14px;outline:none">
+              <button onClick="{{ p.onRemove }}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#a99fc4;width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:12px;flex:none">✕</button>
+            </div>
+          </sc-for>
+        </div>
+        <button onClick="{{ onAdd }}" style="margin-top:9px;width:100%;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.2);color:#f5f0ff;border-radius:9px;padding:8px;cursor:pointer;font-size:12px;font-weight:500;flex:none">+ {{ addPlayerLabel }}</button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex:none">
+        <button onClick="{{ onBack }}" style="background:none;border:none;color:#00e5ff;font-size:14px;font-weight:600;padding:11px 8px;cursor:pointer">← {{ backLabel }}</button>
+        <button onClick="{{ onStart }}" style="{{ startStyle }}">{{ startLabel }} ▶</button>
+      </div>
+      <sc-if value="{{ playersKeyboardOpen }}">
+        <div style="{{ playersKeyboardOverlayStyle }}">
+          <div style="{{ playersKeyboardPanelStyle }}">
+            <div style="text-align:center;flex:none">
+              <div style="{{ playersKeyboardTitleStyle }}">{{ playersTitle }}</div>
+              <div style="{{ playersKeyboardSubtitleStyle }}">{{ focusedPlayerLabel }}</div>
+            </div>
+            <div style="{{ playersKeyboardInputWrapStyle }}">
+              <span style="{{ focusedCircleStyle }}">{{ focusedIdxLabel }}</span>
+              <input id="player-focus-input" data-player-input="{{ focusedPlayerId }}" value="{{ focusedPlayerName }}" placeholder="{{ focusedPlayerLabel }}" onInput="{{ focusedPlayerInput }}" onFocus="{{ focusedPlayerFocus }}" onBlur="{{ focusedPlayerBlur }}" onKeyDown="{{ focusedPlayerKeyDown }}" enterKeyHint="done" autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck="false" style="{{ focusedNameInputStyle }}">
+            </div>
+            <sc-if value="{{ portraitTextEntry }}">
+              <button onClick="{{ onFinishPortraitEntry }}" style="align-self:center;min-width:150px;padding:12px 20px;border:none;border-radius:13px;cursor:pointer;background:linear-gradient(92deg,#00bcd4,#3ddc97);color:#06271f;font-family:'Unbounded';font-size:13px;font-weight:800">{{ portraitEntryDoneLabel }} ✓</button>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ===================== MEMORIA ===================== -->
+  <sc-if value="{{ isMemorize }}">
+    <sc-if value="{{ memHidden }}">
+      <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center">
+        <div style="font-family:'Unbounded';font-weight:800;font-size:clamp(34px,7vh,56px);letter-spacing:-1px;line-height:1;background:linear-gradient(92deg,#ff2d95,#ffd23f 55%,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent">{{ memoryTitle }}</div>
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a99fc4">{{ memProgress }}</div>
+        <div style="color:#d8cffb;font-size:15px">{{ memPassText }}</div>
+        <div style="font-family:'Unbounded';font-weight:700;font-size:32px;color:#00e5ff;filter:drop-shadow(0 0 16px rgba(0,229,255,.5))">{{ memName }}</div>
+        <sc-if value="{{ memCanReveal }}"><button onClick="{{ onMemReveal }}" style="margin-top:4px;background:linear-gradient(92deg,#ff2d95,#ff6ab0);border:none;color:#fff;font-weight:700;font-size:16px;padding:14px 30px;border-radius:14px;cursor:pointer;box-shadow:0 10px 30px rgba(255,45,149,.4)">👀 {{ memRevealLabel }}</button></sc-if>
+        <sc-if value="{{ memWaiting }}"><div style="margin-top:4px;color:#75e8bc;font-size:13px;font-weight:700">{{ memWaitingText }}</div></sc-if>
+        <div style="color:#7a7099;font-size:clamp(9px,2.2vw,12px);max-width:100%;white-space:nowrap">{{ memPrivateNote }}</div>
+        <sc-if value="{{ memCanBack }}">
+          <button onClick="{{ onMemBack }}" style="background:none;border:none;color:#00e5ff;padding:7px 8px;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer">← {{ backLabel }}</button>
+        </sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{ memReveal }}">
+      <div style="height:100%;display:flex;align-items:stretch;padding:max(22px,env(safe-area-inset-top)) max(30px,env(safe-area-inset-right)) 22px max(30px,env(safe-area-inset-left));gap:20px">
+        <div style="flex:none;width:290px;max-width:42%;display:flex;flex-direction:column;justify-content:center;gap:14px;min-width:0">
+          <div style="font-family:'Unbounded';font-weight:800;font-size:clamp(22px,4.4vh,30px);line-height:.95;letter-spacing:-.5px;background:linear-gradient(92deg,#ff2d95,#ffd23f 55%,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent">{{ memoryTitle }}</div>
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#a99fc4">{{ memProgress }}</div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="color:#d8cffb;font-size:13px">{{ memPassText }}</div>
+            <div style="font-family:'Unbounded';font-weight:700;font-size:clamp(26px,5vh,34px);color:#00e5ff;line-height:1;filter:drop-shadow(0 0 16px rgba(0,229,255,.5))">{{ memName }}</div>
+          </div>
+          <button onClick="{{ onMemDone }}" style="align-self:flex-start;margin-top:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#f5f0ff;font-weight:600;font-size:14px;padding:11px 22px;border-radius:13px;cursor:pointer">{{ memDoneLabel }} →</button>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+          <div style="display:flex;gap:20px;animation:popin .3s">
+            <sc-for list="{{ memCards }}" as="card" hint-placeholder-count="2">
+              <div style="{{ card.style }}">
+                <div style="position:absolute;top:8px;left:11px;font-weight:800;font-size:20px">{{ card.rank }}</div>
+                {{ card.center }}
+                <div style="position:absolute;bottom:8px;right:11px;font-weight:800;font-size:20px;transform:rotate(180deg)">{{ card.rank }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="color:#ffd23f;font-size:14px;font-weight:600">{{ memRememberLabel }} 🧠</div>
+        </div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===================== JUEGO ===================== -->
+  <sc-if value="{{ isPlay }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="position:absolute;top:max(12px,env(safe-area-inset-top));left:0;right:198px;z-index:20;display:flex;justify-content:center;pointer-events:none"><span style="{{ titleGameStyle }}">{{ title }}</span></div>
+
+      <sc-if value="{{ menuOpen }}">
+        <div onClick="{{ onMenuClose }}" style="position:absolute;inset:0;z-index:30;background:rgba(5,3,10,.62);display:flex;align-items:flex-end;justify-content:center">
+          <div onClick="{{ onSheetTap }}" style="width:100%;max-width:560px;background:linear-gradient(180deg,#1e1438,#17102a);border:1px solid rgba(255,255,255,.1);border-bottom:none;border-top-left-radius:22px;border-top-right-radius:22px;box-shadow:0 -20px 60px rgba(0,0,0,.6);padding:16px 18px 22px;animation:sheetup .26s cubic-bezier(.2,.85,.25,1)">
+            <div onTouchStart="{{ onMenuSwipeStart }}" onTouchEnd="{{ onMenuSwipeEnd }}" style="display:flex;justify-content:center;padding:0 0 14px;touch-action:none">
+              <div style="width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,.2)"></div>
+            </div>
+            <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:3px">{{ menuTitle }}</div>
+            <div style="text-align:center;color:#a99fc4;font-size:13px;margin-bottom:16px">{{ menuQuestion }}</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <button onClick="{{ onMenuClose }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:600;color:#f5f0ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"><span style="font-size:19px;line-height:1">▶</span>{{ continuePlayingLabel }}</button>
+              <button onClick="{{ onMenuFinish }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700;color:#0b0713;background:linear-gradient(92deg,#ffd23f,#ff6ab0);border:none"><span style="font-size:19px;line-height:1">🏁</span>{{ finishRankingLabel }}</button>
+              <button onClick="{{ onMenuHome }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 16px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:600;color:#f5f0ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"><span style="width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(135deg,#00e5ff,#3ddc97);box-shadow:0 4px 14px rgba(0,229,255,.35)">⟲</span>{{ homeMenuLabel }}</button>
+            </div>
+            <div style="text-align:center;color:#7a7099;font-size:11px;margin-top:13px;line-height:1.4">{{ gameDiscardWarning }}</div>
+          </div>
+        </div>
+      </sc-if>
+      <div style="flex:1;display:flex;min-height:0">
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;position:relative">
+        <div style="{{ stageColStyle }}">
+          <div style="{{ activeRowStyle }}">
+            <sc-for list="{{ activeCards }}" as="card" hint-placeholder-count="5">
+              <div style="{{ card.style }}" onClick="{{ card.onClick }}">
+                <sc-if value="{{ card.faceUp }}">
+                  <div style="{{ card.cornerStyle }}">{{ card.rank }}</div>
+                  {{ card.center }}
+                  <div style="{{ card.cornerBottomStyle }}">{{ card.rank }}</div>
+                </sc-if>
+                <sc-if value="{{ card.faceDown }}">
+                  <div style="{{ card.backSymbolStyle }}">▲</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ showSendBtn }}">
+            <button onClick="{{ onSendDrinks }}" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(92deg,#ff2d95,#ff6ab0);border:none;color:#fff;font-family:'Unbounded';font-weight:700;font-size:15px;padding:13px 22px;border-radius:14px;cursor:pointer;box-shadow:0 10px 30px rgba(255,45,149,.4);white-space:nowrap">🍺 {{ sendBtnLabel }}</button>
+          </sc-if>
+          <sc-if value="{{ showOnlineNextCard }}">
+            <button onClick="{{ onOnlineNextCard }}" style="position:absolute;bottom:21px;left:calc(50% + 112px);background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.38);color:#00e5ff;font-weight:700;font-size:12px;padding:12px 14px;border-radius:13px;cursor:pointer;white-space:nowrap">{{ nextCardLabel }} →</button>
+          </sc-if>
+          <sc-if value="{{ showBackBtn }}">
+            <button onClick="{{ onGoBack }}" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.4);color:#00e5ff;font-family:'Unbounded';font-weight:700;font-size:14px;padding:12px 20px;border-radius:14px;cursor:pointer;white-space:nowrap">← {{ backLabel }}</button>
+          </sc-if>
+        </div>
+        <sc-if value="{{ sheetOpen }}">
+        <div style="flex:none;margin:0 30px;background:linear-gradient(180deg,#1e1438,#17102a);border:1px solid rgba(255,255,255,.14);border-bottom:none;box-shadow:0 -14px 40px rgba(0,0,0,.55);padding:12px 18px max(30px,env(safe-area-inset-bottom));animation:sheetup .26s cubic-bezier(.2,.85,.25,1);height:45vh;overflow:auto;border-top-left-radius:22px;border-top-right-radius:22px;display:flex;flex-direction:column">
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;flex:none;margin-top:-6px;margin-bottom:4px;height:15px">
+            <div style="width:44px;height:5px;border-radius:4px;background:rgba(255,255,255,.28)"></div>
+            <button onClick="{{ onMinimize }}" aria-label="{{ minimizeLabel }}" style="position:absolute;left:-18px;right:-18px;top:-10px;bottom:-30px;width:auto;height:auto;background:none;border:none;cursor:pointer;padding:0;margin:0;z-index:3"></button>
+          </div>
+          <div style="width:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column;justify-content:flex-start;flex:1;min-height:0">
+            <sc-if value="{{ onlineResponse }}">
+              <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:4px">{{ onlineResponseTitle }}</div>
+              <div style="text-align:center;color:#d8cffb;font-size:13px;margin-bottom:16px;line-height:1.4">{{ onlineResponsePrompt }}</div>
+              <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                <button onClick="{{ onOnlineAccept }}" style="background:linear-gradient(92deg,#ff2d95,#ff6ab0);border:none;color:#fff;font-weight:700;font-size:15px;padding:14px 22px;border-radius:14px;cursor:pointer;box-shadow:0 8px 24px rgba(255,45,149,.4)">🍺 Aceptar</button>
+                <button onClick="{{ onOnlineChallenge }}" style="background:rgba(255,210,63,.14);border:1px solid #ffd23f;color:#ffd23f;font-weight:700;font-size:15px;padding:14px 22px;border-radius:14px;cursor:pointer">🤥 ¡MENTIRA!</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ onlineCompose }}">
+              <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:18px;margin-bottom:4px">{{ onlineSendTitle }}</div>
+              <div style="text-align:center;color:#a99fc4;font-size:13px;margin-bottom:14px">{{ onlineSendPrompt }}</div>
+              <div style="display:flex;gap:8px;flex-wrap:nowrap;justify-content:safe center;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;padding:0 2px 8px;margin-bottom:6px">
+                <sc-for list="{{ onlineTargetOptions }}" as="o" hint-placeholder-count="2">
+                  <button onClick="{{ o.onClick }}" style="{{ o.style }}"><span style="{{ o.circleStyle }}">{{ o.initial }}</span>{{ o.name }}</button>
+                </sc-for>
+              </div>
+              <div style="text-align:center"><button onClick="{{ onMinimize }}" style="background:none;border:none;color:#7a7099;font-size:13px;cursor:pointer">← Atrás</button></div>
+            </sc-if>
+
+            <sc-if value="{{ phaseClaim }}">
+              <div style="text-align:center;color:#a99fc4;font-size:13px;margin-bottom:14px">{{ claimPrompt }}</div>
+              <div style="display:flex;gap:8px;flex-wrap:nowrap;justify-content:safe center;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;padding:0 2px 8px;margin-bottom:6px">
+                <sc-for list="{{ claimOptions }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.onClick }}" style="{{ o.style }}"><span style="{{ o.circleStyle }}">{{ o.initial }}</span>{{ o.name }}</button>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:10px;justify-content:center">
+                <button onClick="{{ onNextCard }}" style="background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.35);color:#00e5ff;padding:9px 16px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer">{{ nextCardLabel }} →</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ phaseTarget }}">
+              <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:19px;margin-bottom:3px">{{ targetTitle }}</div>
+              <div style="text-align:center;color:#a99fc4;font-size:13px;margin-bottom:14px">{{ targetPrompt }}</div>
+              <div style="display:flex;gap:8px;flex-wrap:nowrap;justify-content:safe center;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;padding:0 2px 8px;margin-bottom:4px">
+                <sc-for list="{{ targetOptions }}" as="o" hint-placeholder-count="2">
+                  <button onClick="{{ o.onClick }}" style="{{ o.style }}"><span style="{{ o.circleStyle }}">{{ o.initial }}</span>{{ o.name }}</button>
+                </sc-for>
+              </div>
+              <div style="text-align:center"><button onClick="{{ onBackClaim }}" style="background:none;border:none;color:#7a7099;font-size:13px;cursor:pointer">← {{ backLabel }}</button></div>
+            </sc-if>
+
+            <sc-if value="{{ phaseRespond }}">
+              <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:19px;margin-bottom:3px">{{ respondTitle }}</div>
+              <div style="text-align:center;color:#a99fc4;font-size:13px;margin-bottom:16px">{{ respondPrompt }}</div>
+              <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                <button onClick="{{ onDrink }}" style="background:linear-gradient(92deg,#ff2d95,#ff6ab0);border:none;color:#fff;font-weight:700;font-size:16px;padding:15px 26px;border-radius:14px;cursor:pointer;box-shadow:0 8px 24px rgba(255,45,149,.4)">🍺 {{ drinkButtonLabel }}</button>
+                <button onClick="{{ onLie }}" style="background:rgba(255,210,63,.14);border:1px solid #ffd23f;color:#ffd23f;font-weight:700;font-size:16px;padding:15px 26px;border-radius:14px;cursor:pointer">🤥 {{ lieLabel }}</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ phaseReveal }}">
+              <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:17px;margin-bottom:2px">{{ revealTitle }}</div>
+              <div style="text-align:center;color:#a99fc4;font-size:12px;margin-bottom:10px">{{ revealPrompt }}</div>
+              <div style="display:flex;gap:14px;justify-content:center">
+                <sc-for list="{{ revealCards }}" as="rc" hint-placeholder-count="2">
+                  <div onClick="{{ rc.onClick }}" style="{{ rc.style }}">
+                    <sc-if value="{{ rc.faceDown }}">
+                      <div style="font-family:'Unbounded';font-weight:800;font-size:20px;opacity:.55">?</div>
+                    </sc-if>
+                    <sc-if value="{{ rc.faceUp }}">
+                      <div style="position:absolute;top:5px;left:7px;font-weight:800;font-size:13px">{{ rc.rank }}</div>
+                      {{ rc.center }}
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ phaseResult }}">
+              <div style="text-align:center;font-family:'Unbounded';font-weight:700;font-size:20px;margin-bottom:4px">{{ resultTitle }}</div>
+              <div style="text-align:center;color:#d8cffb;font-size:13px;margin-bottom:10px;line-height:1.35">{{ resultText }}</div>
+              <sc-if value="{{ resultCardShown }}">
+                <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;animation:popin .3s">
+                  <div style="{{ resultCard.style }}">
+                    <div style="position:absolute;top:5px;left:7px;font-weight:800;font-size:13px">{{ resultCard.rank }}</div>
+                    {{ resultCard.center }}
+                  </div>
+                  <button onClick="{{ onNewCard }}" style="background:linear-gradient(92deg,#00e5ff,#4af2c8);border:none;color:#04252b;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer">{{ newCardButtonLabel }} →</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ resultDrink }}">
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                  <button onClick="{{ onContinue }}" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#f5f0ff;padding:11px 18px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer">↺ {{ anotherSendLabel }}</button>
+                  <button onClick="{{ onNextCard }}" style="background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.35);color:#00e5ff;padding:11px 18px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer">{{ nextCardLabel }} →</button>
+                </div>
+              </sc-if>
+            </sc-if>
+
+          </div>
+        </div>
+      </sc-if>
+        </div>
+        <div style="width:198px;flex:none;min-height:0;border-left:1px solid rgba(255,255,255,.06);padding:52px 12px 12px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+          <div style="flex:none">
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:center">
+              <sc-for list="{{ miniRows }}" as="row" hint-placeholder-count="5">
+                <div style="{{ row.wrapStyle }}">
+                  <sc-for list="{{ row.cards }}" as="c">
+                    <div style="{{ c.style }}">{{ c.content }}</div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden">
+            <div style="flex:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7a7099;margin-bottom:8px">{{ sidebarDrinksLabel }}</div>
+            <div style="display:flex;flex:1;min-height:0;flex-direction:column;gap:8px;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;padding-right:4px">
+              <sc-for list="{{ scores }}" as="s" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="{{ s.dotStyle }}"></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;justify-content:space-between;gap:6px;font-size:12px;color:#f5f0ff"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.name }}</span><span style="font-weight:700;color:#ffd23f">{{ s.drinks }}</span></div>
+                    <div style="height:4px;background:rgba(255,255,255,.08);border-radius:4px;margin-top:3px;overflow:hidden"><div style="{{ s.barStyle }}"></div></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ onlineActivity }}">
+              <div style="flex:none;border-top:1px solid rgba(255,255,255,.09);margin-top:10px;padding-top:9px">
+                <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7a7099;margin-bottom:6px">Envíos en sala</div>
+                <div style="display:flex;flex-direction:column;gap:5px;max-height:92px;overflow:auto;padding-right:2px">
+                  <sc-for list="{{ onlineEvents }}" as="e" hint-placeholder-count="2">
+                    <div style="font-size:11px;line-height:1.3;color:#d8cffb;padding:6px 7px;border-radius:8px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)">{{ e.text }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      <sc-if value="{{ phaseNewCard }}">
+        <div style="position:absolute;inset:0;z-index:40;overflow:auto;background:radial-gradient(120% 90% at 50% 0%, rgba(0,229,255,.16), transparent 60%), #0b0713;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 20px;text-align:center">
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a99fc4;display:flex;align-items:center;justify-content:center;gap:8px">
+            <span>{{ newCardTitle }}</span>
+            <span aria-hidden="true" style="width:15px;height:21px;border-radius:3px;background:#efe8ff;border:1px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(0,229,255,.28);display:inline-flex;align-items:center;justify-content:center;color:#00e5ff;font-family:'Unbounded';font-weight:800;font-size:8px;line-height:1;transform:rotate(-7deg);letter-spacing:0">▲</span>
+          </div>
+          <div style="color:#d8cffb;font-size:14px">{{ passPhoneLabel }}</div>
+          <div style="font-family:'Unbounded';font-weight:700;font-size:26px;color:#00e5ff;filter:drop-shadow(0 0 16px rgba(0,229,255,.5))">{{ newCardName }}</div>
+          <sc-if value="{{ newCardHidden }}">
+            <button onClick="{{ onNewCardReveal }}" style="margin-top:4px;background:linear-gradient(92deg,#00e5ff,#4af2c8);border:none;color:#04252b;font-weight:700;font-size:16px;padding:14px 30px;border-radius:14px;cursor:pointer;box-shadow:0 10px 30px rgba(0,229,255,.35)">👀 {{ newCardRevealLabel }}</button>
+            <div style="color:#7a7099;font-size:12px;max-width:320px">{{ newCardPrivateNote }}</div>
+          </sc-if>
+          <sc-if value="{{ newCardReveal }}">
+            <div style="display:flex;gap:14px;align-items:flex-end;animation:popin .3s">
+              <sc-for list="{{ newCardSlots }}" as="slot" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+                  <div style="{{ slot.style }}">
+                    <sc-if value="{{ slot.faceUp }}">
+                      <div style="position:absolute;top:8px;left:11px;font-weight:800;font-size:20px">{{ slot.rank }}</div>
+                      {{ slot.center }}
+                      <div style="position:absolute;bottom:8px;right:11px;font-weight:800;font-size:20px;transform:rotate(180deg)">{{ slot.rank }}</div>
+                    </sc-if>
+                    <sc-if value="{{ slot.faceDown }}">
+                      <div style="font-family:'Unbounded';font-weight:800;font-size:26px;opacity:.55">▲</div>
+                    </sc-if>
+                  </div>
+                  <div style="{{ slot.labelStyle }}">{{ slot.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="color:#ffd23f;font-size:13px;font-weight:600">{{ newCardRememberLabel }}</div>
+            <button onClick="{{ onNewCardDone }}" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#f5f0ff;font-weight:600;font-size:15px;padding:11px 24px;border-radius:14px;cursor:pointer;flex:none">{{ memDoneLabel }} →</button>
+          </sc-if>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ===================== FIN ===================== -->
+  <sc-if value="{{ isOver }}">
+    <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:22px;text-align:center;overflow:auto">
+      <div style="font-family:'Unbounded';font-weight:800;font-size:34px;background:linear-gradient(92deg,#ff2d95,#ffd23f,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent">{{ overTitle }}</div>
+      <div style="color:#a99fc4;font-size:13px">{{ finalRankingTitle }}</div>
+      <div style="width:min(430px,100%);display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ finalRanking }}" as="r" hint-placeholder-count="3">
+          <div style="{{ r.rowStyle }}">
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">{{ r.tag }}</span><span style="font-weight:600;font-size:15px">{{ r.name }}</span></div>
+            <div style="font-weight:800;font-size:18px;color:#ffd23f">{{ r.drinks }} 🍺</div>
+          </div>
+        </sc-for>
+      </div>
+      <button onClick="{{ onRestart }}" style="margin-top:6px;background:linear-gradient(92deg,#ff2d95,#ff6ab0);border:none;color:#fff;font-weight:700;font-size:15px;padding:13px 30px;border-radius:14px;cursor:pointer;box-shadow:0 10px 30px rgba(255,45,149,.4)">↺ {{ restartLabel }}</button>
+    </div>
+  </sc-if>
+
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:460},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;PYRAMID&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Estilo&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#ff2d95&quot;,&quot;options&quot;:[&quot;#ff2d95&quot;,&quot;#00e5ff&quot;,&quot;#ffd23f&quot;,&quot;#a855f7&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Estilo&quot;},&quot;defaultDrinkMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;linear&quot;,&quot;options&quot;:[&quot;linear&quot;,&quot;double&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Juego&quot;},&quot;defaultDeck&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;espanola&quot;,&quot;options&quot;:[&quot;francesa&quot;,&quot;espanola&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Juego&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.appMode = true;
+    this.RANKS_FR=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    this.SUITS_FR=[{s:'\u2660',hex:'#00a8c4',bright:'#00e5ff'},{s:'\u2665',hex:'#ff2d95',bright:'#ff6ab0'},{s:'\u2666',hex:'#ff2d95',bright:'#ff6ab0'},{s:'\u2663',hex:'#00a8c4',bright:'#00e5ff'}];
+    this.RANKS_ES=['1','2','3','4','5','6','7','8','9','10','11','12'];
+    this.SUITS_ES=[{s:'oros',name:'oros',sym:'#s-oro',hex:'#c9881c',bright:'#e3b23f',pinta:0},{s:'copas',name:'copas',sym:'#s-copa',hex:'#c0392b',bright:'#e05a4c',pinta:1},{s:'espadas',name:'espadas',sym:'#s-espada',hex:'#2f5aa0',bright:'#5a82c8',pinta:2},{s:'bastos',name:'bastos',sym:'#s-basto',hex:'#2f7d46',bright:'#4fa86e',pinta:3}];
+    this.PAL=['#ff2d95','#00e5ff','#ffd23f','#a855f7','#34d399','#fb923c','#f472b6','#60a5fa'];
+    this.LANGS=[{code:'ES',name:'Espa\u00f1ol',flag:'\ud83c\uddea\ud83c\uddf8'},{code:'EN',name:'English',flag:'\ud83c\uddec\ud83c\udde7'},{code:'FR',name:'Fran\u00e7ais',flag:'\ud83c\uddeb\ud83c\uddf7'},{code:'IT',name:'Italiano',flag:'\ud83c\uddee\ud83c\uddf9'},{code:'DE',name:'Deutsch',flag:'\ud83c\udde9\ud83c\uddea'},{code:'PT',name:'Portugu\u00eas',flag:'\ud83c\uddf5\ud83c\uddf9'}];
+    this.I18N={
+      ES:{
+        pageTitle:'La Pirámide - Juego de beber',
+        portraitTitle:'Gira el móvil',
+        portraitText:'La Pirámide se juega en horizontal para ver bien la fila',
+        menuTitle:'Menú',
+        howToPlayLabel:'Cómo se juega',
+        languageTitle:'Idioma',
+        privacyTitle:'Política de privacidad',
+        homeMenuLabel:'Salir al menú principal',
+        backLabel:'Atrás',
+        howLines:[
+          'Cada jugador recibe 2 cartas boca abajo y las memoriza sin que nadie más las vea.',
+          'Se forma una pirámide de cartas boca abajo: 5 filas, de 5 en la base a 1 en la punta.',
+          'Se van volteando cartas empezando por la base. Cada fila vale más tragos que la anterior.',
+          'Cuando sale una carta, quien crea tenerla en su mano (o quiera farolear) lo dice y reparte los tragos de esa fila a otro jugador.',
+          'Quien los recibe puede beber o decir "¡mentira!" y obligar a mostrar la carta. Si era verdad, bebe el doble quien los recibió; si era mentira, bebe el doble quien mintió.',
+          'El juego termina al voltear la carta de la punta. ¡Gana quien menos haya bebido!'
+        ],
+        privacyLines:[
+          'La Pirámide no exige cuentas ni datos de contacto.',
+          'Los nombres de los jugadores y el idioma elegido se guardan solo en este dispositivo, para recordar tus preferencias en la próxima partida.',
+          'En las partidas online, el apodo y el estado de la sala se transmiten temporalmente para sincronizar el juego. La sala se elimina automáticamente después de 24 horas.',
+          'No se usan cookies de terceros, cuentas ni seguimiento publicitario.'
+        ],
+        gameTagline:'Juego de beber',
+        setupIntroStart:'Di siempre la verdad, o miente sin parar. Allá tú, pero solo hay un objetivo:',
+        setupIntroBold:'emborrachar a los demás',
+        nextLabel:'SIGUIENTE',
+        playersLabel:'Jugadores',
+        playersRangeLabel:'De 3 a 10',
+        deckLabel:'Baraja',
+        spanishDeckNote:'Jugáis con la baraja española',
+        frenchDeckNote:'Jugáis con la baraja francesa',
+        frenchDeckLabel:'Francesa',
+        drinksPerRowLabel:'Tragos por fila',
+        modeDoubleLabel:'Doblar',
+        modeLinearLabel:'+1 fila',
+        modeDoubleNote:'La punta vale 16 tragos.',
+        modeLinearNote:'La punta vale 5 tragos.',
+        playersTitle:'¿Quién juega?',
+        playersSubtitle:'Escribe los nombres',
+        portraitEntryLabel:'Escribir en vertical',
+        portraitEntryDoneLabel:'Listo',
+        addPlayerLabel:'Añadir jugador',
+        startLabel:'EMPEZAR',
+        memoryTitle:'Fase de memoria',
+        passPhoneLabel:'Pásale el móvil a',
+        memRevealLabel:'Ver mis 2 cartas',
+        memPrivateNote:'Solo las verás una vez. Que nadie más mire la pantalla.',
+        memDoneLabel:'Listo, ya memoricé',
+        memRememberLabel:'Memoriza cuál es cuál',
+        playerProgress:({current,total})=>`Jugador ${current} de ${total}`,
+        playerFallback:({n})=>`Jugador ${n}`,
+        menuQuestion:'¿Qué quieres hacer?',
+        continuePlayingLabel:'Seguir jugando',
+        finishRankingLabel:'Terminar y ver ranking',
+        gameDiscardWarning:'Salir al menú principal descartará la partida actual.',
+        minimizeLabel:'Minimizar',
+        stageFlipHint:'Toca la carta que brilla para voltearla',
+        stageCardShown:({rank,suit})=>`Salió un ${rank} de ${suit}`,
+        modeChipDouble:'Doblar por fila',
+        modeChipLinear:'+1 por fila',
+        sendDrinksLabel:'Enviar tragos',
+        continueMoveLabel:'Continuar jugada',
+        claimPrompt:({rank,drinks})=>`¿Quién dice tener un ${rank}? Puedes farolear 😏 · vale ${drinks} 🍺`,
+        nextCardLabel:'Siguiente carta',
+        targetTitle:({name,drinks})=>`${name} reparte ${drinks} 🍺`,
+        targetPrompt:'¿A quién se los manda?',
+        respondTitle:({name,drinks})=>`${name}, te caen ${drinks} 🍺`,
+        respondPrompt:({claimer,rank})=>`${claimer} dice tener un ${rank}. ¿Le crees?`,
+        drinkButton:({drinks})=>`Beber ×${drinks}`,
+        lieLabel:'¡MENTIRA!',
+        revealTitle:({name})=>`${name}, demuéstralo`,
+        revealPrompt:({rank})=>`Enseña UNA carta. ¿Recuerdas cuál era el ${rank}? 😬`,
+        newCardButton:({name})=>`Dar carta nueva a ${name}`,
+        anotherSendLabel:'Otro envío',
+        sidebarDrinksLabel:'Tragos',
+        newCardTitle:'Carta nueva',
+        newCardRevealLabel:'Ver mi carta nueva',
+        newCardPrivateNote:'Verás una carta nueva que reemplaza la que acabas de enseñar. Solo tú puedes verla, memoriza su número y su posición.',
+        newCardRememberLabel:'Memorízala 🧠 · fíjate en qué posición quedó',
+        newCardSlotNew:'▲ NUEVA',
+        newCardSlotSame:'la misma',
+        drinkResultTitle:'🍺 ¡A beber!',
+        drinkResultText:({name,drinks})=>`${name} bebe ${drinks}.`,
+        truthResultTitle:'😎 ¡Era verdad!',
+        truthResultText:({rank,name,drinks})=>`Sí tenía el ${rank}. ${name} bebe DOBLE: ${drinks}.`,
+        lieResultTitle:'🤥 ¡Cazado!',
+        lieResultText:({shown,expected,name,drinks})=>`Enseñó un ${shown}, no un ${expected}. ${name} bebe DOBLE: ${drinks}.`,
+        overTitle:'¡Fin de la pirámide!',
+        finalRankingTitle:'Ranking final de tragos',
+        restartLabel:'Jugar otra vez',
+        modeTitle:'¿Cómo queréis jugar?',
+        modeIntro:'Elige si compartís un solo móvil o si cada persona entra desde el suyo.',
+        localModeTitle:'Un móvil compartido',
+        localModeText:'El juego de siempre: pasad el móvil entre los jugadores.',
+        onlineModeTitle:'Cada jugador con su móvil',
+        onlineModeText:'Cread una sala y entrad con un código. La partida se sincroniza.',
+        noAccountNote:'Sin correo, sin contraseña y sin perfil: solo un nombre para esta partida.',
+        onlineIntro:'Cada jugador usa su propio móvil. Una persona crea la sala y comparte el código.',
+        onlineTitle:'Sala multijugador',
+        onlineNamePlaceholder:'Nombre de la partida',
+        createRoomLabel:'CREAR UNA SALA',
+        orLabel:'o',
+        roomCodePlaceholder:'CÓDIGO',
+        joinRoomLabel:'UNIRME',
+        roomTitle:'Tu sala está lista',
+        roomWaitingText:'Comparte el código y espera a los demás.',
+        roomCodeLabel:'Código de sala',
+        copyCodeLabel:'Copiar',
+        copyDoneLabel:'¡Copiado!',
+        shareCodeLabel:'Compartir',
+        waitingForHostLabel:'Esperando a que el anfitrión empiece la partida…',
+        startRoomLabel:'EMPEZAR PARTIDA',
+        roomNeedsPlayers:'Esperando al menos 3 jugadores',
+        roomDeckPrefix:'Baraja:',
+        roomDrinkPrefix:'Tragos:',
+        roomCreateFailed:'No se ha podido crear la sala. Comprueba tu conexión e inténtalo de nuevo.',
+        roomErrorGeneric:'No se ha podido conectar con la sala. Comprueba el código e inténtalo de nuevo.',
+        roomExpired:'Esta sala ya no está disponible.'
+      },
+      EN:{
+        pageTitle:'Pyramid - Drinking Game',
+        portraitTitle:'Rotate your phone',
+        portraitText:'Pyramid is played in landscape so everyone can see the row',
+        menuTitle:'Menu',
+        howToPlayLabel:'How to play',
+        languageTitle:'Language',
+        privacyTitle:'Privacy policy',
+        homeMenuLabel:'Back to main menu',
+        backLabel:'Back',
+        howLines:[
+          'Each player gets 2 face-down cards and memorizes them without showing anyone.',
+          'Build a face-down pyramid: 5 rows, from 5 cards at the base to 1 at the top.',
+          'Flip cards starting from the base. Each row is worth more drinks than the previous one.',
+          'When a card appears, anyone who thinks they have it (or wants to bluff) says so and gives that row’s drinks to another player.',
+          'The receiver can drink or call "lie!" and force the card to be shown. If it was true, the receiver drinks double; if it was a lie, the bluffer drinks double.',
+          'The game ends when the top card is flipped. The player who drank the least wins!'
+        ],
+        privacyLines:[
+          'Pyramid does not require accounts or contact details.',
+          'Player names and the selected language are stored only on this device, so your preferences are remembered next game.',
+          'For online rooms, the game nickname and room state are sent temporarily to synchronize the game. Rooms are deleted automatically after 24 hours.',
+          'There are no third-party cookies, accounts, or advertising tracking.'
+        ],
+        gameTagline:'Drinking game',
+        setupIntroStart:'Tell the truth every time, or bluff all night. Your call, but there is only one goal:',
+        setupIntroBold:'get everyone else drinking',
+        nextLabel:'NEXT',
+        playersLabel:'Players',
+        playersRangeLabel:'From 3 to 10',
+        deckLabel:'Deck',
+        spanishDeckNote:'You play with the Spanish deck',
+        frenchDeckNote:'You play with the French deck',
+        frenchDeckLabel:'French',
+        drinksPerRowLabel:'Drinks per row',
+        modeDoubleLabel:'Double',
+        modeLinearLabel:'+1 row',
+        modeDoubleNote:'The top card is worth 16 drinks.',
+        modeLinearNote:'The top card is worth 5 drinks.',
+        playersTitle:'Who is playing?',
+        playersSubtitle:'Enter the names',
+        portraitEntryLabel:'Type in portrait',
+        portraitEntryDoneLabel:'Done',
+        addPlayerLabel:'Add player',
+        startLabel:'START',
+        memoryTitle:'Memory phase',
+        passPhoneLabel:'Pass the phone to',
+        memRevealLabel:'See my 2 cards',
+        memPrivateNote:'You will only see them once. Make sure nobody else looks at the screen.',
+        memDoneLabel:'Done, I memorized them',
+        memRememberLabel:'Memorize which is which',
+        playerProgress:({current,total})=>`Player ${current} of ${total}`,
+        playerFallback:({n})=>`Player ${n}`,
+        menuQuestion:'What do you want to do?',
+        continuePlayingLabel:'Keep playing',
+        finishRankingLabel:'Finish and see ranking',
+        gameDiscardWarning:'Going back to the main menu will discard the current game.',
+        minimizeLabel:'Minimize',
+        stageFlipHint:'Tap the glowing card to flip it',
+        stageCardShown:({rank,suit})=>`A ${rank} of ${suit} came up`,
+        modeChipDouble:'Double by row',
+        modeChipLinear:'+1 by row',
+        sendDrinksLabel:'Send drinks',
+        continueMoveLabel:'Continue turn',
+        claimPrompt:({rank,drinks})=>`Who claims to have a ${rank}? You can bluff 😏 · worth ${drinks} 🍺`,
+        nextCardLabel:'Next card',
+        targetTitle:({name,drinks})=>`${name} gives ${drinks} 🍺`,
+        targetPrompt:'Who gets them?',
+        respondTitle:({name,drinks})=>`${name}, you get ${drinks} 🍺`,
+        respondPrompt:({claimer,rank})=>`${claimer} says they have a ${rank}. Do you believe them?`,
+        drinkButton:({drinks})=>`Drink ×${drinks}`,
+        lieLabel:'LIE!',
+        revealTitle:({name})=>`${name}, prove it`,
+        revealPrompt:({rank})=>`Show ONE card. Do you remember which one was the ${rank}? 😬`,
+        newCardButton:({name})=>`Give ${name} a new card`,
+        anotherSendLabel:'Another send',
+        sidebarDrinksLabel:'Drinks',
+        newCardTitle:'New card',
+        newCardRevealLabel:'See my new card',
+        newCardPrivateNote:'It replaces the card you showed. Only you see it; make sure nobody else looks.',
+        newCardRememberLabel:'Memorize it 🧠 · note where it landed',
+        newCardSlotNew:'▲ NEW',
+        newCardSlotSame:'same one',
+        drinkResultTitle:'🍺 Drink up!',
+        drinkResultText:({name,drinks})=>`${name} drinks ${drinks}.`,
+        truthResultTitle:'😎 It was true!',
+        truthResultText:({rank,name,drinks})=>`They did have the ${rank}. ${name} drinks DOUBLE: ${drinks}.`,
+        lieResultTitle:'🤥 Caught!',
+        lieResultText:({shown,expected,name,drinks})=>`They showed a ${shown}, not a ${expected}. ${name} drinks DOUBLE: ${drinks}.`,
+        overTitle:'Pyramid complete!',
+        finalRankingTitle:'Final drinks ranking',
+        restartLabel:'Play again'
+      },
+      FR:{
+        pageTitle:'La Pyramide - Jeu à boire',
+        portraitTitle:'Tourne le téléphone',
+        portraitText:'La Pyramide se joue en paysage pour bien voir la rangée',
+        menuTitle:'Menu',
+        howToPlayLabel:'Comment jouer',
+        languageTitle:'Langue',
+        privacyTitle:'Politique de confidentialité',
+        homeMenuLabel:'Retour au menu principal',
+        backLabel:'Retour',
+        howLines:[
+          'Chaque joueur reçoit 2 cartes face cachée et les mémorise sans les montrer.',
+          'Formez une pyramide de cartes face cachée : 5 rangées, de 5 cartes à la base à 1 au sommet.',
+          'Retournez les cartes en partant de la base. Chaque rangée vaut plus de gorgées que la précédente.',
+          'Quand une carte sort, celui qui pense l’avoir (ou veut bluffer) l’annonce et donne les gorgées de la rangée à un autre joueur.',
+          'La personne visée peut boire ou dire "mensonge !" et demander à voir la carte. Si c’était vrai, elle boit double ; sinon le bluffeur boit double.',
+          'La partie se termine quand la carte du sommet est retournée. Celui qui a le moins bu gagne !'
+        ],
+        privacyLines:[
+          'La Pyramide ne demande ni compte ni coordonnées.',
+          'Les noms des joueurs et la langue choisie sont stockés uniquement sur cet appareil, afin de retenir tes préférences pour la prochaine partie.',
+          'Pour les salons en ligne, le pseudo et l’état de la partie sont transmis temporairement afin de synchroniser le jeu. Les salons sont supprimés après 24 heures.',
+          'Aucun cookie tiers, compte ou suivi publicitaire n’est utilisé.'
+        ],
+        gameTagline:'Jeu à boire',
+        setupIntroStart:"Dis toujours la vérité, ou bluffe sans t'arrêter. À toi de voir, mais il n'y a qu'un objectif :",
+        setupIntroBold:'faire boire les autres',
+        nextLabel:'SUIVANT',
+        playersLabel:'Joueurs',
+        playersRangeLabel:'De 3 à 10',
+        deckLabel:'Jeu',
+        spanishDeckNote:'Vous jouez avec le jeu espagnol',
+        frenchDeckNote:'Vous jouez avec le jeu français',
+        frenchDeckLabel:'Français',
+        drinksPerRowLabel:'Gorgées par rangée',
+        modeDoubleLabel:'Doubler',
+        modeLinearLabel:'+1 rangée',
+        modeDoubleNote:'La carte du sommet vaut 16 gorgées.',
+        modeLinearNote:'La carte du sommet vaut 5 gorgées.',
+        playersTitle:'Qui joue ?',
+        playersSubtitle:'Écris les noms',
+        portraitEntryLabel:'Écrire à la verticale',
+        portraitEntryDoneLabel:'Terminé',
+        addPlayerLabel:'Ajouter un joueur',
+        startLabel:'COMMENCER',
+        memoryTitle:'Phase mémoire',
+        passPhoneLabel:'Passe le téléphone à',
+        memRevealLabel:'Voir mes 2 cartes',
+        memPrivateNote:'Tu ne les verras qu’une fois. Que personne d’autre ne regarde l’écran.',
+        memDoneLabel:'C’est bon, mémorisé',
+        memRememberLabel:'Mémorise laquelle est laquelle',
+        playerProgress:({current,total})=>`Joueur ${current} sur ${total}`,
+        playerFallback:({n})=>`Joueur ${n}`,
+        menuQuestion:'Que veux-tu faire ?',
+        continuePlayingLabel:'Continuer à jouer',
+        finishRankingLabel:'Terminer et voir le classement',
+        gameDiscardWarning:'Retourner au menu principal abandonnera la partie en cours.',
+        minimizeLabel:'Réduire',
+        stageFlipHint:'Touche la carte qui brille pour la retourner',
+        stageCardShown:({rank,suit})=>`Un ${rank} de ${suit} est sorti`,
+        modeChipDouble:'Doubler par rangée',
+        modeChipLinear:'+1 par rangée',
+        sendDrinksLabel:'Envoyer les gorgées',
+        continueMoveLabel:'Continuer le tour',
+        claimPrompt:({rank,drinks})=>`Qui dit avoir un ${rank} ? Tu peux bluffer 😏 · vaut ${drinks} 🍺`,
+        nextCardLabel:'Carte suivante',
+        targetTitle:({name,drinks})=>`${name} donne ${drinks} 🍺`,
+        targetPrompt:'À qui les envoie-t-on ?',
+        respondTitle:({name,drinks})=>`${name}, tu prends ${drinks} 🍺`,
+        respondPrompt:({claimer,rank})=>`${claimer} dit avoir un ${rank}. Tu le crois ?`,
+        drinkButton:({drinks})=>`Boire ×${drinks}`,
+        lieLabel:'MENSONGE !',
+        revealTitle:({name})=>`${name}, prouve-le`,
+        revealPrompt:({rank})=>`Montre UNE carte. Tu te souviens laquelle était le ${rank} ? 😬`,
+        newCardButton:({name})=>`Donner une nouvelle carte à ${name}`,
+        anotherSendLabel:'Autre envoi',
+        sidebarDrinksLabel:'Gorgées',
+        newCardTitle:'Nouvelle carte',
+        newCardRevealLabel:'Voir ma nouvelle carte',
+        newCardPrivateNote:'Elle remplace la carte montrée. Toi seul la vois ; que personne d’autre ne regarde.',
+        newCardRememberLabel:'Mémorise-la 🧠 · repère sa position',
+        newCardSlotNew:'▲ NOUVELLE',
+        newCardSlotSame:'la même',
+        drinkResultTitle:'🍺 À boire !',
+        drinkResultText:({name,drinks})=>`${name} boit ${drinks}.`,
+        truthResultTitle:'😎 C’était vrai !',
+        truthResultText:({rank,name,drinks})=>`Il avait bien le ${rank}. ${name} boit DOUBLE : ${drinks}.`,
+        lieResultTitle:'🤥 Pris !',
+        lieResultText:({shown,expected,name,drinks})=>`La carte montrée est un ${shown}, pas un ${expected}. ${name} boit DOUBLE : ${drinks}.`,
+        overTitle:'Fin de la pyramide !',
+        finalRankingTitle:'Classement final des gorgées',
+        restartLabel:'Rejouer'
+      },
+      IT:{
+        pageTitle:'La Piramide - Gioco alcolico',
+        portraitTitle:'Ruota il telefono',
+        portraitText:'La Piramide si gioca in orizzontale per vedere bene la fila',
+        menuTitle:'Menu',
+        howToPlayLabel:'Come si gioca',
+        languageTitle:'Lingua',
+        privacyTitle:'Informativa sulla privacy',
+        homeMenuLabel:'Torna al menu principale',
+        backLabel:'Indietro',
+        howLines:[
+          'Ogni giocatore riceve 2 carte coperte e le memorizza senza farle vedere.',
+          'Si forma una piramide di carte coperte: 5 file, da 5 carte alla base a 1 in cima.',
+          'Si scoprono le carte partendo dalla base. Ogni fila vale più sorsi della precedente.',
+          'Quando esce una carta, chi pensa di averla (o vuole bluffare) lo dice e assegna i sorsi di quella fila a un altro giocatore.',
+          'Chi li riceve può bere o dire "bugia!" e obbligare a mostrare la carta. Se era vero, beve il doppio chi li ha ricevuti; se era una bugia, beve il doppio chi ha mentito.',
+          'Il gioco finisce quando si scopre la carta in cima. Vince chi ha bevuto meno!'
+        ],
+        privacyLines:[
+          'La Piramide non richiede account né dati di contatto.',
+          'I nomi dei giocatori e la lingua scelta vengono salvati solo su questo dispositivo, per ricordare le preferenze alla prossima partita.',
+          'Nelle stanze online, il soprannome e lo stato della stanza vengono trasmessi temporaneamente per sincronizzare il gioco. Le stanze vengono eliminate dopo 24 ore.',
+          'Non vengono usati cookie di terze parti, account o tracciamento pubblicitario.'
+        ],
+        gameTagline:'Gioco alcolico',
+        setupIntroStart:"Di sempre la verità oppure bluffa senza fermarti. Decidi tu, ma c'è un solo obiettivo:",
+        setupIntroBold:'far bere gli altri',
+        nextLabel:'AVANTI',
+        playersLabel:'Giocatori',
+        playersRangeLabel:'Da 3 a 10',
+        deckLabel:'Mazzo',
+        spanishDeckNote:'Giocate con il mazzo spagnolo',
+        frenchDeckNote:'Giocate con il mazzo francese',
+        frenchDeckLabel:'Francese',
+        drinksPerRowLabel:'Sorsi per fila',
+        modeDoubleLabel:'Raddoppia',
+        modeLinearLabel:'+1 fila',
+        modeDoubleNote:'La carta in cima vale 16 sorsi.',
+        modeLinearNote:'La carta in cima vale 5 sorsi.',
+        playersTitle:'Chi gioca?',
+        playersSubtitle:'Scrivi i nomi',
+        portraitEntryLabel:'Scrivi in verticale',
+        portraitEntryDoneLabel:'Fatto',
+        addPlayerLabel:'Aggiungi giocatore',
+        startLabel:'INIZIA',
+        memoryTitle:'Fase memoria',
+        passPhoneLabel:'Passa il telefono a',
+        memRevealLabel:'Vedi le mie 2 carte',
+        memPrivateNote:'Le vedrai una sola volta. Che nessun altro guardi lo schermo.',
+        memDoneLabel:'Fatto, le ho memorizzate',
+        memRememberLabel:'Memorizza quale è quale',
+        playerProgress:({current,total})=>`Giocatore ${current} di ${total}`,
+        playerFallback:({n})=>`Giocatore ${n}`,
+        menuQuestion:'Che vuoi fare?',
+        continuePlayingLabel:'Continua a giocare',
+        finishRankingLabel:'Finisci e vedi classifica',
+        gameDiscardWarning:'Tornare al menu principale scarterà la partita attuale.',
+        minimizeLabel:'Riduci',
+        stageFlipHint:'Tocca la carta luminosa per scoprirla',
+        stageCardShown:({rank,suit})=>`È uscito un ${rank} di ${suit}`,
+        modeChipDouble:'Raddoppia per fila',
+        modeChipLinear:'+1 per fila',
+        sendDrinksLabel:'Invia sorsi',
+        continueMoveLabel:'Continua turno',
+        claimPrompt:({rank,drinks})=>`Chi dice di avere un ${rank}? Puoi bluffare 😏 · vale ${drinks} 🍺`,
+        nextCardLabel:'Carta successiva',
+        targetTitle:({name,drinks})=>`${name} assegna ${drinks} 🍺`,
+        targetPrompt:'A chi li manda?',
+        respondTitle:({name,drinks})=>`${name}, ti toccano ${drinks} 🍺`,
+        respondPrompt:({claimer,rank})=>`${claimer} dice di avere un ${rank}. Ci credi?`,
+        drinkButton:({drinks})=>`Bevi ×${drinks}`,
+        lieLabel:'BUGIA!',
+        revealTitle:({name})=>`${name}, dimostralo`,
+        revealPrompt:({rank})=>`Mostra UNA carta. Ricordi qual era il ${rank}? 😬`,
+        newCardButton:({name})=>`Dai una nuova carta a ${name}`,
+        anotherSendLabel:'Altro invio',
+        sidebarDrinksLabel:'Sorsi',
+        newCardTitle:'Nuova carta',
+        newCardRevealLabel:'Vedi la mia nuova carta',
+        newCardPrivateNote:'Sostituisce la carta mostrata. La vedi solo tu; che nessun altro guardi.',
+        newCardRememberLabel:'Memorizzala 🧠 · nota in che posizione è',
+        newCardSlotNew:'▲ NUOVA',
+        newCardSlotSame:'la stessa',
+        drinkResultTitle:'🍺 Si beve!',
+        drinkResultText:({name,drinks})=>`${name} beve ${drinks}.`,
+        truthResultTitle:'😎 Era vero!',
+        truthResultText:({rank,name,drinks})=>`Aveva davvero il ${rank}. ${name} beve DOPPIO: ${drinks}.`,
+        lieResultTitle:'🤥 Beccato!',
+        lieResultText:({shown,expected,name,drinks})=>`Ha mostrato un ${shown}, non un ${expected}. ${name} beve DOPPIO: ${drinks}.`,
+        overTitle:'Fine della piramide!',
+        finalRankingTitle:'Classifica finale dei sorsi',
+        restartLabel:'Gioca di nuovo'
+      },
+      DE:{
+        pageTitle:'Pyramide - Trinkspiel',
+        portraitTitle:'Dreh dein Handy',
+        portraitText:'Pyramide wird quer gespielt, damit die Reihe gut sichtbar ist',
+        menuTitle:'Menü',
+        howToPlayLabel:'So spielt man',
+        languageTitle:'Sprache',
+        privacyTitle:'Datenschutz',
+        homeMenuLabel:'Zum Hauptmenü',
+        backLabel:'Zurück',
+        howLines:[
+          'Jeder Spieler bekommt 2 verdeckte Karten und merkt sie sich, ohne sie zu zeigen.',
+          'Legt eine verdeckte Pyramide: 5 Reihen, von 5 Karten unten bis 1 oben.',
+          'Die Karten werden von unten nach oben aufgedeckt. Jede Reihe ist mehr Schlucke wert als die vorherige.',
+          'Wenn eine Karte erscheint, sagt jeder, der sie zu haben glaubt (oder bluffen will), Bescheid und gibt die Schlucke dieser Reihe an einen anderen Spieler.',
+          'Wer sie bekommt, kann trinken oder "Lüge!" sagen und die Karte sehen wollen. War es wahr, trinkt die Zielperson doppelt; war es gelogen, trinkt der Bluffer doppelt.',
+          'Das Spiel endet, wenn die oberste Karte aufgedeckt ist. Wer am wenigsten getrunken hat, gewinnt!'
+        ],
+        privacyLines:[
+          'Pyramide verlangt keine Konten oder Kontaktdaten.',
+          'Spielernamen und die gewählte Sprache werden nur auf diesem Gerät gespeichert, damit deine Einstellungen beim nächsten Spiel erhalten bleiben.',
+          'Für Online-Räume werden Spiel-Spitzname und Raumstatus vorübergehend zur Synchronisierung übertragen. Räume werden nach 24 Stunden automatisch gelöscht.',
+          'Es werden keine Drittanbieter-Cookies, Konten oder Werbetracker verwendet.'
+        ],
+        gameTagline:'Trinkspiel',
+        setupIntroStart:'Sag immer die Wahrheit, oder bluffe ohne Ende. Deine Wahl, aber es gibt nur ein Ziel:',
+        setupIntroBold:'die anderen zum Trinken bringen',
+        nextLabel:'WEITER',
+        playersLabel:'Spieler',
+        playersRangeLabel:'Von 3 bis 10',
+        deckLabel:'Deck',
+        spanishDeckNote:'Ihr spielt mit dem spanischen Deck',
+        frenchDeckNote:'Ihr spielt mit dem französischen Deck',
+        frenchDeckLabel:'Französisch',
+        drinksPerRowLabel:'Schlucke pro Reihe',
+        modeDoubleLabel:'Doppeln',
+        modeLinearLabel:'+1 Reihe',
+        modeDoubleNote:'Die Spitze ist 16 Schlucke wert.',
+        modeLinearNote:'Die Spitze ist 5 Schlucke wert.',
+        playersTitle:'Wer spielt?',
+        playersSubtitle:'Namen eingeben',
+        portraitEntryLabel:'Hochkant schreiben',
+        portraitEntryDoneLabel:'Fertig',
+        addPlayerLabel:'Spieler hinzufügen',
+        startLabel:'START',
+        memoryTitle:'Merkphase',
+        passPhoneLabel:'Gib das Handy an',
+        memRevealLabel:'Meine 2 Karten ansehen',
+        memPrivateNote:'Du siehst sie nur einmal. Niemand sonst darf auf den Bildschirm schauen.',
+        memDoneLabel:'Fertig, gemerkt',
+        memRememberLabel:'Merk dir, welche welche ist',
+        playerProgress:({current,total})=>`Spieler ${current} von ${total}`,
+        playerFallback:({n})=>`Spieler ${n}`,
+        menuQuestion:'Was möchtest du tun?',
+        continuePlayingLabel:'Weiterspielen',
+        finishRankingLabel:'Beenden und Ranking sehen',
+        gameDiscardWarning:'Zurück zum Hauptmenü verwirft die aktuelle Partie.',
+        minimizeLabel:'Minimieren',
+        stageFlipHint:'Tippe auf die leuchtende Karte, um sie aufzudecken',
+        stageCardShown:({rank,suit})=>`${rank} von ${suit} wurde aufgedeckt`,
+        modeChipDouble:'Doppeln pro Reihe',
+        modeChipLinear:'+1 pro Reihe',
+        sendDrinksLabel:'Schlucke verteilen',
+        continueMoveLabel:'Zug fortsetzen',
+        claimPrompt:({rank,drinks})=>`Wer behauptet, eine ${rank} zu haben? Bluffen erlaubt 😏 · wert ${drinks} 🍺`,
+        nextCardLabel:'Nächste Karte',
+        targetTitle:({name,drinks})=>`${name} verteilt ${drinks} 🍺`,
+        targetPrompt:'An wen gehen sie?',
+        respondTitle:({name,drinks})=>`${name}, du bekommst ${drinks} 🍺`,
+        respondPrompt:({claimer,rank})=>`${claimer} behauptet, eine ${rank} zu haben. Glaubst du das?`,
+        drinkButton:({drinks})=>`Trinken ×${drinks}`,
+        lieLabel:'LÜGE!',
+        revealTitle:({name})=>`${name}, beweis es`,
+        revealPrompt:({rank})=>`Zeig EINE Karte. Weißt du noch, welche die ${rank} war? 😬`,
+        newCardButton:({name})=>`${name} eine neue Karte geben`,
+        anotherSendLabel:'Noch mal verteilen',
+        sidebarDrinksLabel:'Schlucke',
+        newCardTitle:'Neue Karte',
+        newCardRevealLabel:'Meine neue Karte ansehen',
+        newCardPrivateNote:'Sie ersetzt die gezeigte Karte. Nur du siehst sie; niemand sonst darf schauen.',
+        newCardRememberLabel:'Merk sie dir 🧠 · achte auf ihre Position',
+        newCardSlotNew:'▲ NEU',
+        newCardSlotSame:'gleich',
+        drinkResultTitle:'🍺 Trinken!',
+        drinkResultText:({name,drinks})=>`${name} trinkt ${drinks}.`,
+        truthResultTitle:'😎 Es stimmte!',
+        truthResultText:({rank,name,drinks})=>`Die ${rank} war wirklich da. ${name} trinkt DOPPELT: ${drinks}.`,
+        lieResultTitle:'🤥 Erwischt!',
+        lieResultText:({shown,expected,name,drinks})=>`Gezeigt wurde ${shown}, nicht ${expected}. ${name} trinkt DOPPELT: ${drinks}.`,
+        overTitle:'Pyramide beendet!',
+        finalRankingTitle:'Finales Schlucke-Ranking',
+        restartLabel:'Noch mal spielen'
+      },
+      PT:{
+        pageTitle:'A Pirâmide - Jogo de beber',
+        portraitTitle:'Roda o telemóvel',
+        portraitText:'A Pirâmide joga-se na horizontal para ver bem a fila',
+        menuTitle:'Menu',
+        howToPlayLabel:'Como jogar',
+        languageTitle:'Idioma',
+        privacyTitle:'Política de privacidade',
+        homeMenuLabel:'Voltar ao menu principal',
+        backLabel:'Voltar',
+        howLines:[
+          'Cada jogador recebe 2 cartas viradas para baixo e memoriza-as sem as mostrar a ninguém.',
+          'Forma-se uma pirâmide de cartas viradas para baixo: 5 filas, de 5 cartas na base a 1 no topo.',
+          'As cartas são viradas a partir da base. Cada fila vale mais goles do que a anterior.',
+          'Quando sai uma carta, quem achar que a tem (ou quiser fazer bluff) diz e distribui os goles dessa fila a outro jogador.',
+          'Quem os recebe pode beber ou dizer "mentira!" e obrigar a mostrar a carta. Se era verdade, quem recebeu bebe o dobro; se era mentira, quem mentiu bebe o dobro.',
+          'O jogo acaba quando se vira a carta do topo. Ganha quem tiver bebido menos!'
+        ],
+        privacyLines:[
+          'A Pirâmide não exige contas nem dados de contacto.',
+          'Os nomes dos jogadores e o idioma escolhido ficam guardados apenas neste dispositivo, para recordar as tuas preferências na próxima partida.',
+          'Nas salas online, o apelido e o estado da sala são enviados temporariamente para sincronizar o jogo. As salas são eliminadas automaticamente após 24 horas.',
+          'Não são usados cookies de terceiros, contas ou rastreamento publicitário.'
+        ],
+        gameTagline:'Jogo de beber',
+        setupIntroStart:'Diz sempre a verdade, ou faz bluff sem parar. Tu é que sabes, mas só há um objetivo:',
+        setupIntroBold:'fazer os outros beber',
+        nextLabel:'SEGUINTE',
+        playersLabel:'Jogadores',
+        playersRangeLabel:'De 3 a 10',
+        deckLabel:'Baralho',
+        spanishDeckNote:'Jogam com o baralho espanhol',
+        frenchDeckNote:'Jogam com o baralho francês',
+        frenchDeckLabel:'Francês',
+        drinksPerRowLabel:'Goles por fila',
+        modeDoubleLabel:'Dobrar',
+        modeLinearLabel:'+1 fila',
+        modeDoubleNote:'A carta do topo vale 16 goles.',
+        modeLinearNote:'A carta do topo vale 5 goles.',
+        playersTitle:'Quem joga?',
+        playersSubtitle:'Escreve os nomes',
+        portraitEntryLabel:'Escrever na vertical',
+        portraitEntryDoneLabel:'Pronto',
+        addPlayerLabel:'Adicionar jogador',
+        startLabel:'COMEÇAR',
+        memoryTitle:'Fase de memória',
+        passPhoneLabel:'Passa o telemóvel a',
+        memRevealLabel:'Ver as minhas 2 cartas',
+        memPrivateNote:'Só as vais ver uma vez. Que mais ninguém olhe para o ecrã.',
+        memDoneLabel:'Pronto, memorizei',
+        memRememberLabel:'Memoriza qual é qual',
+        playerProgress:({current,total})=>`Jogador ${current} de ${total}`,
+        playerFallback:({n})=>`Jogador ${n}`,
+        menuQuestion:'O que queres fazer?',
+        continuePlayingLabel:'Continuar a jogar',
+        finishRankingLabel:'Terminar e ver ranking',
+        gameDiscardWarning:'Voltar ao menu principal vai descartar a partida atual.',
+        minimizeLabel:'Minimizar',
+        stageFlipHint:'Toca na carta brilhante para a virar',
+        stageCardShown:({rank,suit})=>`Saiu um ${rank} de ${suit}`,
+        modeChipDouble:'Dobrar por fila',
+        modeChipLinear:'+1 por fila',
+        sendDrinksLabel:'Enviar goles',
+        continueMoveLabel:'Continuar jogada',
+        claimPrompt:({rank,drinks})=>`Quem diz ter um ${rank}? Podes fazer bluff 😏 · vale ${drinks} 🍺`,
+        nextCardLabel:'Carta seguinte',
+        targetTitle:({name,drinks})=>`${name} distribui ${drinks} 🍺`,
+        targetPrompt:'A quem os envia?',
+        respondTitle:({name,drinks})=>`${name}, levas ${drinks} 🍺`,
+        respondPrompt:({claimer,rank})=>`${claimer} diz ter um ${rank}. Acreditas?`,
+        drinkButton:({drinks})=>`Beber ×${drinks}`,
+        lieLabel:'MENTIRA!',
+        revealTitle:({name})=>`${name}, prova`,
+        revealPrompt:({rank})=>`Mostra UMA carta. Lembras-te qual era o ${rank}? 😬`,
+        newCardButton:({name})=>`Dar uma carta nova a ${name}`,
+        anotherSendLabel:'Outro envio',
+        sidebarDrinksLabel:'Goles',
+        newCardTitle:'Carta nova',
+        newCardRevealLabel:'Ver a minha carta nova',
+        newCardPrivateNote:'Substitui a carta que mostraste. Só tu a vês; que mais ninguém olhe.',
+        newCardRememberLabel:'Memoriza-a 🧠 · repara em que posição ficou',
+        newCardSlotNew:'▲ NOVA',
+        newCardSlotSame:'a mesma',
+        drinkResultTitle:'🍺 A beber!',
+        drinkResultText:({name,drinks})=>`${name} bebe ${drinks}.`,
+        truthResultTitle:'😎 Era verdade!',
+        truthResultText:({rank,name,drinks})=>`Tinha mesmo o ${rank}. ${name} bebe DOBRO: ${drinks}.`,
+        lieResultTitle:'🤥 Apanhado!',
+        lieResultText:({shown,expected,name,drinks})=>`Mostrou um ${shown}, não um ${expected}. ${name} bebe DOBRO: ${drinks}.`,
+        overTitle:'Fim da pirâmide!',
+        finalRankingTitle:'Ranking final de goles',
+        restartLabel:'Jogar outra vez'
+      }
+    };
+    let _savedLang='ES'; try{ _savedLang=localStorage.getItem('pyramid_lang')||'ES'; }catch(e){}
+    if(!this.I18N[_savedLang]) _savedLang='ES';
+    const _savedPlayers=this.loadPlayers();
+    this.ROOM_API=(typeof window!=='undefined' && window.PYRAMID_ROOM_API) || 'https://late-dawn-a06d.pyramid-app.workers.dev';
+    this._roomApplying=false;
+    this._roomPoll=null;
+    this._roomSyncTimer=null;
+    this.state={
+      screen:'mode',
+      sessionMode:'local',
+      onlineStage:'choose', onlineName:'', onlineCodeInput:'', roomCode:'', roomMemberId:'', roomToken:'', roomMembers:[], roomEvents:[], roomVersion:0, roomOwner:false, roomStatus:'',
+      emuSize:0, emuNonce:0,
+      players:_savedPlayers.players,
+      nextId:_savedPlayers.nextId,
+      drinkMode:(props&&props.defaultDrinkMode)||'linear',
+      deckType:(props&&props.defaultDeck)||'espanola',
+      isPortrait:false, winW:0, winH:0, viewW:0, viewH:0, viewTop:0,
+      activePlayerId:null, keyboardOpen:false, portraitTextEntry:false,
+      playersG:[], hands:[], rows:[], cur:{r:4,c:0}, tally:[],
+      memIdx:0, memReveal:false,
+      deckRest:[], revealedIdx:null, revealPeekIdx:null, newCardReveal:false,
+      phase:'flip', flippedCard:null, claimer:null, target:null, result:null,
+      sheetShown:false, prevState:null,
+      lang:_savedLang, langOpen:false, menuOpen:false,
+      hamMenuOpen:false, hamView:'menu'
+    };
+  }
+
+  setState(update, cb){
+    super.setState(update, ()=>{
+      if(!this._roomApplying && this.shouldSyncRoom(update)) this.queueRoomSync();
+      if(cb) cb();
+    });
+  }
+
+  shouldSyncRoom(update){
+    if(this.state.sessionMode!=='online' || this.state.onlineStage!=='game' || !this.state.roomCode || !this.state.roomToken) return false;
+    const data=typeof update==='function' ? {} : (update||{});
+    const roomKeys=['screen','playersG','hands','rows','cur','tally','memReady','deckRest','revealedIdx','revealPeekIdx','newCardReveal','phase','flippedCard','claimer','target','result','prevState','drinkMode','deckType'];
+    return roomKeys.some(k=>Object.prototype.hasOwnProperty.call(data,k));
+  }
+
+  roomSnapshot(){
+    const S=this.state;
+    const keys=['screen','playersG','hands','rows','cur','tally','memReady','deckRest','revealedIdx','revealPeekIdx','newCardReveal','phase','flippedCard','claimer','target','result','prevState','drinkMode','deckType'];
+    const out={}; keys.forEach(k=>{ out[k]=S[k]; });
+    return out;
+  }
+
+  api(path, options){
+    const opt=options||{};
+    const headers=Object.assign({'content-type':'application/json'},opt.headers||{});
+    if(this.state.roomToken) headers['x-room-token']=this.state.roomToken;
+    return fetch(this.ROOM_API+path, Object.assign({},opt,{headers})).then(async res=>{
+      let data={}; try{ data=await res.json(); }catch(e){}
+      if(!res.ok){ const err=new Error(data.error||'room_request_failed'); err.status=res.status; err.payload=data; throw err; }
+      return data;
+    });
+  }
+
+  normalizeRoomCode(value){ return String(value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6); }
+
+  roomError(error, action){
+    const key=error&&error.message==='room_not_found'?'roomExpired':(action==='create'?'roomCreateFailed':'roomErrorGeneric');
+    this.setState({roomStatus:this.tr(key)});
+  }
+
+  roomEventTally(){
+    const totals=[...(this.state.tally||[])];
+    if(this.state.sessionMode!=='online') return totals;
+    const members=this.state.roomMembers||[];
+    const indexFor=(id)=>members.findIndex((member)=>member.id===id);
+    (this.state.roomEvents||[]).forEach((event)=>{
+      const drinks=Math.max(0,Number(event.drinks)||0);
+      if(event.status==='accepted'){
+        const target=indexFor(event.targetId); if(target>=0) totals[target]=(totals[target]||0)+drinks;
+      }else if(event.status==='truth'){
+        const target=indexFor(event.targetId); if(target>=0) totals[target]=(totals[target]||0)+drinks*2;
+      }else if(event.status==='lie'){
+        const sender=indexFor(event.senderId); if(sender>=0) totals[sender]=(totals[sender]||0)+drinks*2;
+      }
+    });
+    return totals;
+  }
+
+  async sendRoomDrink(targetId){
+    const S=this.state;
+    if(S.sessionMode!=='online'||!S.roomCode||!S.roomMemberId) return;
+    try{
+      await this.api('/api/rooms/'+S.roomCode+'/events',{method:'POST',body:JSON.stringify({member:S.roomMemberId,target:targetId})});
+      this.setState({sheetShown:false,roomStatus:''},()=>this.pollRoom());
+    }catch(error){ this.roomError(error); }
+  }
+
+  async respondToRoomDrink(eventId, decision){
+    const S=this.state;
+    if(S.sessionMode!=='online'||!S.roomCode||!S.roomMemberId||!eventId) return;
+    try{
+      await this.api('/api/rooms/'+S.roomCode+'/events/'+encodeURIComponent(eventId)+'/respond',{method:'POST',body:JSON.stringify({member:S.roomMemberId,decision})});
+      this.setState({roomStatus:''},()=>this.pollRoom());
+    }catch(error){ this.roomError(error); }
+  }
+
+  async createRoom(){
+    const name=String(this.state.onlineName||'').trim();
+    if(!name){ this.setState({roomStatus:'Escribe un apodo para crear la sala.'}); return; }
+    this.setState({roomStatus:''});
+    try{
+      const data=await this.api('/api/rooms',{method:'POST',body:JSON.stringify({name})});
+      this.setState({sessionMode:'online',onlineStage:'room',roomCode:data.code,roomMemberId:data.member.id,roomToken:data.token,roomMembers:data.members,roomEvents:data.drinkEvents||[],roomVersion:data.version,roomOwner:true,roomStatus:''},()=>this.startRoomPolling());
+    }catch(error){ this.roomError(error,'create'); }
+  }
+
+  async joinRoom(){
+    const name=String(this.state.onlineName||'').trim();
+    const code=this.normalizeRoomCode(this.state.onlineCodeInput);
+    if(!name){ this.setState({roomStatus:'Escribe un apodo para unirte.'}); return; }
+    if(code.length!==6){ this.setState({roomStatus:'Escribe el código de 6 caracteres.'}); return; }
+    this.setState({roomStatus:''});
+    try{
+      const data=await this.api('/api/rooms/'+code+'/join',{method:'POST',body:JSON.stringify({name})});
+      this.setState({sessionMode:'online',onlineStage:'room',roomCode:data.code,roomMemberId:data.member.id,roomToken:data.token,roomMembers:data.members,roomEvents:data.drinkEvents||[],roomVersion:data.version,roomOwner:false,roomStatus:''},()=>this.startRoomPolling());
+      if(data.state&&data.state.screen&&data.state.screen!=='roomlobby') this.applyRoomState(data.state);
+    }catch(error){ this.roomError(error); }
+  }
+
+  startRoomPolling(){
+    if(this._roomPoll) clearInterval(this._roomPoll);
+    this.pollRoom();
+    this._roomPoll=setInterval(()=>this.pollRoom(),1400);
+  }
+
+  stopRoomPolling(){ if(this._roomPoll){ clearInterval(this._roomPoll); this._roomPoll=null; } if(this._roomSyncTimer){ clearTimeout(this._roomSyncTimer); this._roomSyncTimer=null; } }
+
+  async pollRoom(){
+    const S=this.state;
+    if(S.sessionMode!=='online'||!S.roomCode||!S.roomToken||!S.roomMemberId) return;
+    try{
+      const data=await this.api('/api/rooms/'+S.roomCode+'?member='+encodeURIComponent(S.roomMemberId),{method:'GET'});
+      const wasInLobby=this.state.onlineStage==='room';
+      this._roomApplying=true;
+      super.setState({roomMembers:data.members||[],roomEvents:data.drinkEvents||[],roomVersion:data.version,roomStatus:''},()=>{ this._roomApplying=false; });
+      if(data.state&&data.state.screen&&data.state.screen!=='roomlobby'){
+        if(wasInLobby || data.version!==S.roomVersion) this.applyRoomState(data.state);
+      }
+    }catch(error){
+      if(error.status===401) this.stopRoomPolling();
+      this._roomApplying=true; super.setState({roomStatus:this.tr(error&&error.message==='room_not_found'?'roomExpired':'roomErrorGeneric')},()=>{this._roomApplying=false;});
+    }
+  }
+
+  applyRoomState(snapshot){
+    const safe=snapshot&&typeof snapshot==='object'?snapshot:null;
+    if(!safe) return;
+    this._roomApplying=true;
+    super.setState(Object.assign({},safe,{onlineStage:'game'}),()=>{ this._roomApplying=false; });
+  }
+
+  queueRoomSync(){
+    if(this._roomSyncTimer) clearTimeout(this._roomSyncTimer);
+    this._roomSyncTimer=setTimeout(()=>this.syncRoomState(),120);
+  }
+
+  async syncRoomState(){
+    this._roomSyncTimer=null;
+    const S=this.state;
+    if(S.sessionMode!=='online'||!S.roomCode||!S.roomToken) return;
+    try{
+      const data=await this.api('/api/rooms/'+S.roomCode+'/state',{method:'PUT',body:JSON.stringify({member:S.roomMemberId,version:S.roomVersion,state:this.roomSnapshot()})});
+      this._roomApplying=true; super.setState({roomVersion:data.version,roomStatus:''},()=>{this._roomApplying=false;});
+    }catch(error){
+      if(error.status===409) this.pollRoom(); else this.roomError(error);
+    }
+  }
+
+  pickLang(code){ const lang=this.I18N[code]?code:'ES'; try{ localStorage.setItem('pyramid_lang', lang); }catch(e){} this.setState({lang, langOpen:false}); }
+
+  blankPlayers(){
+    return [{id:1,name:''},{id:2,name:''},{id:3,name:''}];
+  }
+
+  loadPlayers(){
+    const fallback=this.blankPlayers();
+    try{
+      const raw=localStorage.getItem('pyramid_players');
+      if(!raw) return {players:fallback,nextId:4};
+      const saved=JSON.parse(raw);
+      const list=Array.isArray(saved) ? saved : (saved&&Array.isArray(saved.players) ? saved.players : []);
+      const players=list.slice(0,10).map((p,i)=>({id:i+1,name:String((typeof p==='string'?p:(p&&p.name))||'')}));
+      while(players.length<3) players.push({id:players.length+1,name:''});
+      return {players,nextId:players.length+1};
+    }catch(e){
+      return {players:fallback,nextId:4};
+    }
+  }
+
+  savePlayers(players){
+    try{ localStorage.setItem('pyramid_players', JSON.stringify(players.slice(0,10).map(p=>({name:p.name||''})))); }catch(e){}
+  }
+
+  tr(key, vars, lang){
+    const pack=this.I18N[lang||this.state.lang]||this.I18N.ES;
+    const val=pack[key]!==undefined ? pack[key] : this.I18N.ES[key];
+    if(typeof val==='function') return val(vars||{});
+    return val!==undefined ? val : key;
+  }
+
+  readViewport(){
+    if(typeof window==='undefined') return {winW:0,winH:0,viewW:0,viewH:0,viewTop:0};
+    const vv=window.visualViewport;
+    const winW=window.innerWidth||0;
+    const winH=window.innerHeight||0;
+    return {
+      winW, winH,
+      viewW:vv ? vv.width : winW,
+      viewH:vv ? vv.height : winH,
+      viewTop:vv ? (vv.offsetTop||0) : 0
+    };
+  }
+
+  refreshViewport(){
+    if(typeof window==='undefined') return;
+    const m=this.readViewport();
+    const active=this.state.screen==='players' && this.state.activePlayerId!=null;
+    const currentFull=Math.max(m.viewH||0,m.winH||0);
+    if(!this._fullViewportH || !active || currentFull>this._fullViewportH+4) this._fullViewportH=currentFull;
+    const base=this._fullViewportH||currentFull||1;
+    const visible=Math.min(m.viewH||base,m.winH||base);
+    const keyboardGap=Math.max(0,base-visible);
+    const gapOpen=keyboardGap>Math.max(80,base*.22);
+    let keyboardOpen=this.state.keyboardOpen;
+    if(active){
+      if(gapOpen){ keyboardOpen=true; this._sawKeyboardGap=true; }
+      else if(this._sawKeyboardGap && keyboardGap<24){ keyboardOpen=false; this._sawKeyboardGap=false; }
+    } else {
+      keyboardOpen=false;
+      this._sawKeyboardGap=false;
+    }
+    this.setState({isPortrait:m.winH > m.winW + 40, winW:m.winW, winH:m.winH, viewW:m.viewW, viewH:m.viewH, viewTop:m.viewTop, keyboardOpen});
+  }
+
+  componentDidMount(){
+    this._r=()=>this.refreshViewport();
+    this._r();
+    this.syncScreenCaptureProtection();
+    window.addEventListener('resize', this._r);
+    if(window.visualViewport){
+      window.visualViewport.addEventListener('resize', this._r);
+      window.visualViewport.addEventListener('scroll', this._r);
+    }
+  }
+  componentDidUpdate(){
+    this.syncFocusedPlayerInput();
+    this.syncScreenCaptureProtection();
+  }
+  componentWillUnmount(){
+    this.setTextEntryOrientation('landscape');
+    this.setScreenCaptureProtection(false);
+    if(this._r){
+      window.removeEventListener('resize', this._r);
+      if(window.visualViewport){
+        window.visualViewport.removeEventListener('resize', this._r);
+        window.visualViewport.removeEventListener('scroll', this._r);
+      }
+    }
+    if(this._playerBlurTO) clearTimeout(this._playerBlurTO);
+    this.stopRoomPolling();
+  }
+
+  // Las dos cartas iniciales sólo se ven durante este estado. El contenedor
+  // nativo de Android usa FLAG_SECURE para bloquear captura, grabación y la
+  // miniatura de la app en Recientes mientras esta vista está activa.
+  syncScreenCaptureProtection(){
+    this.setScreenCaptureProtection(this.state.screen==='memorize' && this.state.memReveal===true);
+  }
+
+  setScreenCaptureProtection(enabled){
+    const next=!!enabled;
+    if(this._screenCaptureProtection===next) return;
+    this._screenCaptureProtection=next;
+    try{
+      if(window.PyramidNative && window.PyramidNative.postMessage){
+        window.PyramidNative.postMessage(JSON.stringify({action:'setScreenCaptureProtection',enabled:next}));
+      }
+    }catch(e){}
+  }
+
+  setTextEntryOrientation(orientation){
+    try{
+      if(window.PyramidNative && window.PyramidNative.postMessage){
+        window.PyramidNative.postMessage(JSON.stringify({action:'setTextEntryOrientation',orientation}));
+        return;
+      }
+      if(window.screen && window.screen.orientation && window.screen.orientation.lock){
+        window.screen.orientation.lock(orientation).catch(()=>{});
+      }
+    }catch(e){}
+  }
+
+  startPortraitTextEntry(){
+    if(this.state.screen!=='players' || this.state.portraitTextEntry) return;
+    const id=this.state.activePlayerId || (this.state.players[0] && this.state.players[0].id);
+    if(id==null) return;
+    this._portraitEntryReady=false;
+    this.setState({portraitTextEntry:true,activePlayerId:id,keyboardOpen:true},()=>{
+      this.setTextEntryOrientation('portrait');
+      setTimeout(()=>{
+        this._portraitEntryReady=true;
+        this.refreshViewport();
+      },700);
+    });
+  }
+
+  finishPortraitTextEntry(){
+    if(!this.state.portraitTextEntry) return;
+    this._portraitEntryReady=false;
+    const active=typeof document!=='undefined' ? document.activeElement : null;
+    if(active && typeof active.blur==='function') active.blur();
+    this.setState({portraitTextEntry:false,activePlayerId:null,keyboardOpen:false},()=>{
+      this.setTextEntryOrientation('landscape');
+      setTimeout(()=>this.refreshViewport(),350);
+    });
+  }
+
+  handlePlayerKeyDown(e){
+    if(!e || e.key!=='Enter') return;
+    if(e.preventDefault) e.preventDefault();
+    if(this.state.portraitTextEntry) this.finishPortraitTextEntry();
+  }
+
+  focusPlayer(id){
+    if(this._playerBlurTO) clearTimeout(this._playerBlurTO);
+    if(this.state.activePlayerId===id && this.state.keyboardOpen) return;
+    if(this.state.activePlayerId!==id) this._sawKeyboardGap=false;
+    this.setState({activePlayerId:id, keyboardOpen:true}, ()=>{
+      this.refreshViewport();
+      setTimeout(()=>this.refreshViewport(), 180);
+      setTimeout(()=>this.refreshViewport(), 420);
+    });
+  }
+
+  blurPlayer(id){
+    if(this._playerBlurTO) clearTimeout(this._playerBlurTO);
+    this._playerBlurTO=setTimeout(()=>{
+      const active=typeof document!=='undefined' ? document.activeElement : null;
+      const activeId=active && active.getAttribute ? active.getAttribute('data-player-input') : null;
+      if(activeId && Number(activeId)===this.state.activePlayerId) return;
+      if(this.state.activePlayerId===id){
+        if(this.state.portraitTextEntry){
+          if(this._portraitEntryReady) this.finishPortraitTextEntry();
+          return;
+        }
+        this._sawKeyboardGap=false;
+        this.setState({activePlayerId:null, keyboardOpen:false});
+      }
+    }, 140);
+  }
+
+  syncFocusedPlayerInput(){
+    if(typeof document==='undefined') return;
+    if(!(this.state.screen==='players' && this.state.keyboardOpen && this.state.activePlayerId!=null)) return;
+    const el=document.getElementById('player-focus-input');
+    if(!el || document.activeElement===el) return;
+    try{ el.focus({preventScroll:true}); }catch(e){ try{ el.focus(); }catch(e2){} }
+    try{
+      const end=String(el.value||'').length;
+      el.setSelectionRange(end,end);
+    }catch(e){}
+  }
+
+  css(str){ const o={}; String(str).split(';').forEach(d=>{ d=d.trim(); if(!d) return; const i=d.indexOf(':'); if(i<0) return; const k=d.slice(0,i).trim(); const val=d.slice(i+1).trim(); const ck=k.replace(/-([a-z])/g,(m,c)=>c.toUpperCase()); o[ck]=val; }); return o; }
+  pcolor(i){ return this.PAL[i%this.PAL.length]; }
+  rankColor(x){ return x || '#ff2d95'; }
+
+  buildDeck(){ const es=this.state.deckType==='espanola'; const ranks=es?this.RANKS_ES:this.RANKS_FR; const suits=es?this.SUITS_ES:this.SUITS_FR; const d=[]; for(const r of ranks){ for(const su of suits){ d.push({rank:r, suit:su.s, suitName:su.name||su.s, color:su.hex, bright:su.bright, sym:su.sym||'', pinta:su.pinta||0}); } } return d; }
+  shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i];a[i]=a[j];a[j]=t; } return a; }
+  rowDrinks(i){ const level=this.state.rows.length - i; return this.state.drinkMode==='double' ? Math.pow(2, level-1) : level; }
+
+  bigCard(w, faceUp, glow, color, es, trimH){
+    const h=Math.round(w*1.42)-(trimH||0);
+    const rad=es?Math.round(w*0.06):Math.round(w*0.11);
+    let s=`position:relative;width:${w}px;height:${h}px;border-radius:${rad}px;display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;transition:transform .18s ease, box-shadow .2s;`;
+    if(faceUp){
+      if(es){ s+=`background:#f4ecd8;border:1px solid rgba(90,54,18,.35);box-shadow:0 12px 28px rgba(0,0,0,.5);color:${color||'#c0392b'};`; }
+      else { s+=`background:linear-gradient(160deg,#fbf7ff,#e7ddff);border:1px solid rgba(0,0,0,.06);box-shadow:0 12px 28px rgba(0,0,0,.5);color:${color||'#ff2d95'};`; }
+    }
+    else { s+=`background:linear-gradient(140deg,#2b1656,#3d2075 55%,#4a1d63);border:1px solid rgba(255,255,255,.14);box-shadow:0 12px 28px rgba(0,0,0,.5), inset 0 0 0 5px rgba(255,255,255,.04);color:rgba(255,255,255,.55);`; }
+    if(glow){ s+=`cursor:pointer;animation:glowpulse 1.3s infinite;`; }
+    return this.css(s);
+  }
+
+  // Render the centre of a card: pip layout (números) or figura (Sota/Caballo/Rey) for Spanish; big symbol for French.
+  cardCenter(rank, suit, w, isEs){
+    const R=React;
+    if(!isEs){
+      return R.createElement('div',{style:{fontSize:Math.round(w*0.34)+'px',lineHeight:1}}, suit);
+    }
+    const figs={'10':'\ud83d\udc64','11':'\ud83d\udc0e','12':'\ud83d\udc51'}; // Sota, Caballo, Rey
+    if(figs[rank]){
+      return R.createElement('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',gap:Math.round(w*0.03)+'px'}},
+        R.createElement('div',{style:{fontSize:Math.round(w*0.42)+'px',lineHeight:1}}, figs[rank]),
+        R.createElement('div',{style:{fontSize:Math.round(w*0.17)+'px',lineHeight:1}}, suit)
+      );
+    }
+    const n=parseInt(rank,10)||1;
+    const pipSize=Math.max(12, Math.round(w*(n>=6?0.17:(n>=4?0.21:0.26))));
+    const pips=[];
+    for(let i=0;i<n;i++){ pips.push(R.createElement('span',{key:i,style:{fontSize:pipSize+'px',lineHeight:1}}, suit)); }
+    return R.createElement('div',{style:{display:'flex',flexWrap:'wrap',gap:Math.round(w*0.03)+'px',justifyContent:'center',alignItems:'center',maxWidth:Math.round(w*0.8)+'px'}}, pips);
+  }
+
+  // Render completo (interior) de una carta española: borde con pintas, esquinas (número + palo mini) y centro (pips o figura).
+  spanishInterior(card, w){
+    const R=React;
+    const k=w/134;
+    const col=card.color||'#c0392b';
+    const sym=card.sym||'#s-oro';
+    const v=parseInt(card.rank,10)||1;
+    const isFig=v>=10;
+    const FIG={10:'#fig-sota',11:'#fig-caballo',12:'#fig-rey'};
+    const PIPS={1:[[50,50]],2:[[50,29],[50,71]],3:[[50,22],[50,50],[50,78]],4:[[30,27],[70,27],[30,73],[70,73]],5:[[30,25],[70,25],[50,50],[30,75],[70,75]],6:[[30,23],[70,23],[30,50],[70,50],[30,77],[70,77]],7:[[30,21],[70,21],[30,50],[70,50],[30,79],[70,79],[50,50]],8:[[30,18],[70,18],[30,39],[70,39],[30,61],[70,61],[30,82],[70,82]],9:[[28,22],[50,22],[72,22],[28,50],[50,50],[72,50],[28,78],[50,78],[72,78]]};
+    const pipSize=(n)=> n===1?84:(n<=3?46:(n<=6?36:(n===7?32:28)));
+    const px=(n)=>Math.round(n*k)+'px';
+    const pintaX = card.pinta===0?[]:card.pinta===1?[50]:card.pinta===2?[40,60]:[33,50,67];
+    const breaks=[]; pintaX.forEach(x=>{ breaks.push([x-5.5,3]); breaks.push([x-5.5,144]); });
+    const border=R.createElement('svg',{viewBox:'0 0 100 154',preserveAspectRatio:'none',style:{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none',color:col}},
+      R.createElement('rect',{x:6,y:6,width:88,height:142,rx:5,fill:'none',stroke:'currentColor',strokeWidth:1.6}),
+      breaks.map((b,i)=>R.createElement('rect',{key:'b'+i,x:b[0],y:b[1],width:11,height:7,fill:'#f4ecd8'}))
+    );
+    const corner=(rot)=>R.createElement('div',{key:rot?'br':'tl',style:Object.assign({position:'absolute',display:'flex',flexDirection:'column',alignItems:'center',lineHeight:1,color:col},rot?{bottom:px(12),right:px(13),transform:'rotate(180deg)'}:{top:px(12),left:px(13)})},
+      R.createElement('div',{style:{fontFamily:"'Cinzel',serif",fontWeight:700,fontSize:px(15)}},card.rank),
+      R.createElement('svg',{viewBox:'0 0 100 100',style:{width:px(13),height:px(13),marginTop:px(2)}},R.createElement('use',{href:sym}))
+    );
+    let center;
+    if(isFig){
+      center=R.createElement('div',{key:'c',style:{position:'absolute',inset:0}},
+        R.createElement('div',{style:{position:'absolute',top:px(15),left:0,right:0,display:'flex',justifyContent:'center'}},
+          R.createElement('svg',{viewBox:'0 0 100 100',style:{width:px(25),height:px(25)}},R.createElement('use',{href:sym}))),
+        R.createElement('div',{style:{position:'absolute',top:px(33),left:0,right:0,bottom:px(22),display:'flex',alignItems:'center',justifyContent:'center',color:col}},
+          R.createElement('svg',{viewBox:'0 0 120 170',style:{width:px(100),height:px(141)}},R.createElement('use',{href:FIG[v]||'#fig-sota'})))
+      );
+    } else {
+      const pips=PIPS[v]||[]; const ps=Math.max(6,Math.round(pipSize(v)*k));
+      center=R.createElement('div',{key:'c',style:{position:'absolute',top:px(22),left:px(14),right:px(14),bottom:px(22)}},
+        pips.map((p,i)=>R.createElement('svg',{key:'p'+i,viewBox:'0 0 100 100',style:{position:'absolute',left:p[0]+'%',top:p[1]+'%',transform:'translate(-50%,-50%)',width:ps+'px',height:ps+'px'}},R.createElement('use',{href:sym})))
+      );
+    }
+    return R.createElement('div',{style:{position:'absolute',inset:0}}, border, corner(false), corner(true), center);
+  }
+
+  // --- setup handlers ---
+  setName(id,val){ const players=this.state.players.map(p=>p.id===id?{...p,name:val}:p); this.savePlayers(players); this.setState({players}); }
+  addPlayer(){ if(this.state.players.length>=10) return; const id=this.state.nextId; const players=[...this.state.players,{id,name:''}]; this.savePlayers(players); this.setState({players, nextId:id+1}); }
+  removePlayer(id){ if(this.state.players.length<=3) return; const players=this.state.players.filter(p=>p.id!==id); this.savePlayers(players); const clear=this.state.activePlayerId===id; this.setState(clear?{players,activePlayerId:null,keyboardOpen:false}:{players}); }
+  decPlayer(){ if(this.state.players.length<=3) return; const removed=this.state.players[this.state.players.length-1]; const players=this.state.players.slice(0,-1); this.savePlayers(players); const clear=removed&&this.state.activePlayerId===removed.id; this.setState(clear?{players,activePlayerId:null,keyboardOpen:false}:{players}); }
+
+  roomPlayerIndex(){
+    if(this.state.sessionMode!=='online') return -1;
+    return this.state.roomMembers.findIndex(p=>p.id===this.state.roomMemberId);
+  }
+
+  start(){
+    const basePlayers=this.state.sessionMode==='online' ? this.state.roomMembers : this.state.players;
+    const players=basePlayers.map((p,i)=>{
+      const name=String(p.name||'').trim();
+      return {name:name || (this.state.sessionMode==='local' ? this.tr('playerFallback',{n:i+1}) : '')};
+    });
+    if(players.length<3 || players.some(p=>!p.name)) return;
+    if(this.state.portraitTextEntry) this.setTextEntryOrientation('landscape');
+    const deck=this.shuffle(this.buildDeck());
+    const hands=players.map(()=>[deck.pop(),deck.pop()]);
+    const sizes=[1,2,3,4,5];
+    const rows=sizes.map(nn=>{ const row=[]; for(let i=0;i<nn;i++){ const c=deck.pop(); row.push({rank:c.rank,suit:c.suit,suitName:c.suitName,color:c.color,bright:c.bright,sym:c.sym,pinta:c.pinta,faceUp:false}); } return row; });
+    this.setState({screen:'memorize', onlineStage:this.state.sessionMode==='online'?'game':this.state.onlineStage, activePlayerId:null, keyboardOpen:false, portraitTextEntry:false, playersG:players, hands, rows, deckRest:deck, cur:{r:4,c:0}, tally:players.map(()=>0), memIdx:0, memReady:players.map(()=>false), memReveal:false, revealedIdx:null, newCardReveal:false, phase:'flip', flippedCard:null, claimer:null, target:null, result:null});
+  }
+
+  memDone(){
+    if(this.state.sessionMode==='online'){
+      const me=this.roomPlayerIndex();
+      if(me<0) return;
+      const ready=(this.state.memReady||this.state.playersG.map(()=>false)).slice();
+      ready[me]=true;
+      const allReady=ready.length===this.state.playersG.length&&ready.every(Boolean);
+      this.setState(allReady?{memReady:ready,memReveal:false,screen:'play',phase:'flip'}:{memReady:ready,memReveal:false});
+      return;
+    }
+    const ni=this.state.memIdx+1; if(ni>=this.state.playersG.length){ this.setState({screen:'play', phase:'flip'}); } else { this.setState({memIdx:ni, memReveal:false}); }
+  }
+
+  // --- play handlers ---
+  flipNext(){ const S=this.state; const rows=S.rows.map(r=>r.map(c=>({...c}))); const {r,c}=S.cur; rows[r][c].faceUp=true; const card=rows[r][c]; this.setState({rows, flippedCard:{rank:card.rank,suit:card.suit,suitName:card.suitName,color:card.color,bright:card.bright,sym:card.sym,pinta:card.pinta,drinks:this.rowDrinks(r)}, phase:'claim', sheetShown:false}); }
+  claim(i){ this.setState({claimer:i, phase:'target'}); }
+  target(i){ this.setState({target:i, phase:'respond'}); }
+  drink(){ const S=this.state; const t=[...S.tally]; const drinks=S.flippedCard.drinks; t[S.target]+=drinks; this.setState({tally:t, phase:'result', result:{kind:'drink', targetName:S.playersG[S.target].name, drinks, card:null}}); }
+  revealPick(idx){
+    if(this.state.revealPeekIdx!=null) return;
+    this.setState({revealPeekIdx:idx});
+    if(this._revealTO) clearTimeout(this._revealTO);
+    this._revealTO=setTimeout(()=>this.revealResolve(idx), 1000);
+  }
+  revealResolve(idx){
+    const S=this.state; const card=S.hands[S.claimer][idx]; const truth=card.rank===S.flippedCard.rank; const t=[...S.tally]; const d=S.flippedCard.drinks; let result;
+    if(truth){ t[S.target]+=d*2; result={kind:'truth', rank:S.flippedCard.rank, targetName:S.playersG[S.target].name, drinks:d*2, card}; }
+    else { t[S.claimer]+=d*2; result={kind:'lie', shownRank:card.rank, expectedRank:S.flippedCard.rank, claimerName:S.playersG[S.claimer].name, drinks:d*2, card}; }
+    this.setState({tally:t, phase:'result', result, revealedIdx:idx, revealPeekIdx:null});
+  }
+  newCard(){ const S=this.state; const deck=S.deckRest.slice(); const hands=S.hands.map(h=>h.slice()); if(deck.length>0 && S.claimer!=null && S.revealedIdx!=null){ hands[S.claimer][S.revealedIdx]=deck.pop(); } this.setState({hands, deckRest:deck, phase:'newcard', newCardReveal:false}); }
+  newCardDone(){ this.setState({phase:'claim', newCardReveal:false, revealedIdx:null, revealPeekIdx:null, claimer:null, target:null, result:null}); }
+  advance(){ const S=this.state; const prevState={cur:{r:S.cur.r,c:S.cur.c}, flippedCard:S.flippedCard}; let r=S.cur.r, c=S.cur.c+1; if(c>=S.rows[r].length){ r=r-1; c=0; } if(r<0){ this.setState({screen:'over'}); return; } this.setState({cur:{r,c}, phase:'flip', flippedCard:null, claimer:null, target:null, result:null, sheetShown:false, revealPeekIdx:null, prevState}); }
+  goBack(){ const p=this.state.prevState; if(!p) return; this.setState({cur:p.cur, flippedCard:p.flippedCard, phase:'claim', claimer:null, target:null, result:null, sheetShown:false, revealPeekIdx:null, prevState:null}); }
+
+  renderVals(){
+    const S=this.state;
+    const activeLang=this.I18N[S.lang]?S.lang:'ES';
+    const t=(key,vars)=>this.tr(key,vars,activeLang);
+    if(typeof document!=='undefined'){
+      document.documentElement.lang=activeLang.toLowerCase();
+      document.title=t('pageTitle');
+    }
+    const accent=(this.props&&this.props.accent)||'#ff2d95';
+    const isMode=S.screen==='mode', isOnline=S.screen==='online', isSetup=S.screen==='setup', isPlayers=S.screen==='players', isMemorize=S.screen==='memorize', isPlay=S.screen==='play', isOver=S.screen==='over';
+    const onlineRoomPlay=isPlay&&S.sessionMode==='online';
+    const v={ title:(this.props&&this.props.title)||'LA PIR\u00c1MIDE', isPortraitBlocked:S.isPortrait&&!S.portraitTextEntry, isMode, isOnline, isSetup, isPlayers, isMemorize, isPlay, isOver };
+    Object.assign(v,{
+      portraitTitle:t('portraitTitle'),
+      portraitText:t('portraitText'),
+      menuTitle:t('menuTitle'),
+      howToPlayLabel:t('howToPlayLabel'),
+      languageTitle:t('languageTitle'),
+      privacyTitle:t('privacyTitle'),
+      homeMenuLabel:t('homeMenuLabel'),
+      backLabel:t('backLabel'),
+      howLines:t('howLines'),
+      privacyLines:t('privacyLines'),
+      gameTagline:t('gameTagline'),
+      setupIntroStart:t('setupIntroStart'),
+      setupIntroBold:t('setupIntroBold'),
+      nextLabel:t('nextLabel'),
+      playersLabel:t('playersLabel'),
+      playersRangeLabel:t('playersRangeLabel'),
+      deckLabel:t('deckLabel'),
+      frenchDeckLabel:t('frenchDeckLabel'),
+      drinksPerRowLabel:t('drinksPerRowLabel'),
+      modeDoubleLabel:t('modeDoubleLabel'),
+      modeLinearLabel:t('modeLinearLabel'),
+      playersTitle:t('playersTitle'),
+      playersSubtitle:t('playersSubtitle'),
+      portraitEntryLabel:t('portraitEntryLabel'),
+      portraitEntryDoneLabel:t('portraitEntryDoneLabel'),
+      addPlayerLabel:t('addPlayerLabel'),
+      startLabel:t('startLabel'),
+      memoryTitle:t('memoryTitle'),
+      passPhoneLabel:t('passPhoneLabel'),
+      memRevealLabel:t('memRevealLabel'),
+      memPrivateNote:t('memPrivateNote'),
+      memDoneLabel:t('memDoneLabel'),
+      memRememberLabel:t('memRememberLabel'),
+      menuQuestion:t('menuQuestion'),
+      continuePlayingLabel:t('continuePlayingLabel'),
+      finishRankingLabel:t('finishRankingLabel'),
+      gameDiscardWarning:t('gameDiscardWarning'),
+      minimizeLabel:t('minimizeLabel'),
+      nextCardLabel:t('nextCardLabel'),
+      targetPrompt:t('targetPrompt'),
+      lieLabel:t('lieLabel'),
+      anotherSendLabel:t('anotherSendLabel'),
+      sidebarDrinksLabel:t('sidebarDrinksLabel'),
+      newCardTitle:t('newCardTitle'),
+      newCardRevealLabel:t('newCardRevealLabel'),
+      newCardPrivateNote:t('newCardPrivateNote'),
+      newCardRememberLabel:t('newCardRememberLabel'),
+      overTitle:t('overTitle'),
+      finalRankingTitle:t('finalRankingTitle'),
+      restartLabel:t('restartLabel')
+    });
+    // MODALIDAD Y SALA ONLINE. El apodo existe solo dentro de la sala temporal.
+    v.modeTitle=t('modeTitle'); v.modeIntro=t('modeIntro');
+    v.localModeTitle=t('localModeTitle'); v.localModeText=t('localModeText');
+    v.onlineModeTitle=t('onlineModeTitle'); v.onlineModeText=t('onlineModeText');
+    v.noAccountNote=t('noAccountNote');
+    v.onChooseLocal=()=>this.setState({screen:'setup',sessionMode:'local',onlineStage:'choose',roomStatus:''});
+    v.onChooseOnline=()=>this.setState({screen:'online',sessionMode:'online',onlineStage:'choose',roomStatus:''});
+    v.onlineTitle=t('onlineTitle'); v.onlineIntro=t('onlineIntro');
+    v.onlineName=S.onlineName; v.onlineCodeInput=S.onlineCodeInput;
+    v.onlineNamePlaceholder=t('onlineNamePlaceholder'); v.roomCodePlaceholder=t('roomCodePlaceholder');
+    v.createRoomLabel=t('createRoomLabel'); v.joinRoomLabel=t('joinRoomLabel'); v.orLabel=t('orLabel');
+    v.onlineChoosing=S.onlineStage==='choose'; v.onlineRoom=S.onlineStage==='room'; v.onlineError=S.roomStatus;
+    v.onOnlineName=(e)=>this.setState({onlineName:String(e.target.value||'').slice(0,20),roomStatus:''});
+    v.onOnlineCode=(e)=>this.setState({onlineCodeInput:this.normalizeRoomCode(e.target.value),roomStatus:''});
+    v.onCreateRoom=()=>this.createRoom(); v.onJoinRoom=()=>this.joinRoom();
+    v.onOnlineBack=()=>{ this.stopRoomPolling(); this.setState({screen:'mode',sessionMode:'local',onlineStage:'choose',roomCode:'',roomMemberId:'',roomToken:'',roomMembers:[],roomEvents:[],roomVersion:0,roomOwner:false,roomStatus:''}); };
+    v.roomTitle=t('roomTitle'); v.roomWaitingText=t('roomWaitingText'); v.roomCodeLabel=t('roomCodeLabel');
+    v.roomCode=S.roomCode; v.roomMemberCount=String(S.roomMembers.length)+' / 10';
+    v.roomMembers=S.roomMembers.map((p,i)=>({name:p.name,host:!!p.host,initial:(String(p.name||'?').trim()[0]||'?').toUpperCase(),dotStyle:this.css(`width:27px;height:27px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:${this.pcolor(i)};color:#0b0713;font-size:11px;font-weight:800;flex:none`)}));
+    v.isRoomHost=!!S.roomOwner; v.isNotRoomHost=!S.roomOwner;
+    v.roomDeckText=t('roomDeckPrefix')+' '+(S.deckType==='espanola'?'Española':t('frenchDeckLabel'));
+    v.roomDeckIsEs=S.deckType==='espanola'; v.roomDeckIsFr=!v.roomDeckIsEs;
+    v.roomDrinkModeText=t('roomDrinkPrefix')+' '+(S.drinkMode==='double'?t('modeDoubleLabel'):t('modeLinearLabel'));
+    v.onToggleDeck=()=>this.setState({deckType:S.deckType==='espanola'?'francesa':'espanola'});
+    v.onToggleDrinkMode=()=>this.setState({drinkMode:S.drinkMode==='double'?'linear':'double'});
+    const roomCanStart=S.roomOwner&&S.roomMembers.length>=3;
+    v.roomStartStyle=this.css(`padding:13px 18px;border-radius:14px;cursor:${roomCanStart?'pointer':'not-allowed'};opacity:${roomCanStart?'1':'.48'};background:linear-gradient(92deg,#ff2d95,#ffd23f);border:none;color:#fff;font-family:'Unbounded';font-weight:700;font-size:14px`);
+    v.startRoomLabel=roomCanStart?t('startRoomLabel'):t('roomNeedsPlayers');
+    v.onStartRoomGame=()=>{ if(roomCanStart) this.start(); };
+    v.copyCodeLabel=t('copyCodeLabel');
+    v.shareCodeLabel=t('shareCodeLabel');
+    v.onCopyRoomCode=()=>{
+      const done=()=>this.setState({roomStatus:t('copyDoneLabel')});
+      if(typeof navigator!=='undefined'&&navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(S.roomCode).then(done).catch(()=>{}); else done();
+    };
+    v.onShareRoomCode=()=>{
+      const code=String(S.roomCode||'');
+      if(!code) return;
+      const text='Únete a mi partida de La Pirámide con el código '+code+'.';
+      if(typeof window!=='undefined'&&window.PyramidNative&&window.PyramidNative.postMessage){
+        window.PyramidNative.postMessage(JSON.stringify({action:'shareRoom',code,text}));
+        return;
+      }
+      if(typeof navigator!=='undefined'&&navigator.share){ navigator.share({title:'La Pirámide',text}).catch(()=>{}); return; }
+      if(typeof navigator!=='undefined'&&navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(()=>this.setState({roomStatus:t('copyDoneLabel')})).catch(()=>{}); }
+    };
+    const _es=S.deckType==='espanola';
+    const suitBig=_es?this.css('font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;line-height:1.05;text-align:center;padding:0 4px'):this.css('font-size:40px');
+    const suitSm=_es?this.css('font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;line-height:1.05;text-align:center;padding:0 3px'):this.css('font-size:34px');
+
+    // SETUP (modo + nº jugadores)
+    v.playerCount=S.players.length;
+    v.onIncPlayers=()=>this.addPlayer();
+    v.onDecPlayers=()=>this.decPlayer();
+    const stepBase='width:44px;height:44px;border-radius:12px;font-family:\'Unbounded\';font-weight:700;font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;';
+    v.decStyle=this.css(stepBase+(S.players.length<=3?'background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#4a4364;cursor:not-allowed;':'background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#f5f0ff;'));
+    v.incStyle=this.css(stepBase+(S.players.length>=10?'background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#4a4364;cursor:not-allowed;':'background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#f5f0ff;'));
+    v.onNext=()=>this.setState({screen:'players'});
+    v.nextStyle=this.css(`flex:none;font-family:'Unbounded';font-weight:700;font-size:15px;padding:11px 40px;border-radius:14px;border:none;cursor:pointer;color:#fff;background:linear-gradient(92deg,#ff2d95,#ffd23f);box-shadow:0 12px 34px rgba(255,45,149,.4)`);
+
+    // NOMBRES
+    const circle=(i)=>this.css(`width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0b0713;background:${this.pcolor(i)};flex:none`);
+    v.playersSetup=S.players.map((p,i)=>({ id:p.id, name:p.name, placeholder:t('playerFallback',{n:i+1}), idxLabel:String(i+1), circleStyle:circle(i), onInput:(e)=>this.setName(p.id, e.target.value), onFocus:()=>this.focusPlayer(p.id), onBlur:()=>this.blurPlayer(p.id), onKeyDown:(e)=>this.handlePlayerKeyDown(e), onRemove:()=>this.removePlayer(p.id) }));
+    const focusedIdx=S.players.findIndex(p=>p.id===S.activePlayerId);
+    const focusedPlayer=focusedIdx>=0 ? S.players[focusedIdx] : null;
+    const layoutH=S.winH || (typeof window!=='undefined'?window.innerHeight:480);
+    const visibleH=S.viewH || layoutH;
+    const visibleW=S.viewW || S.winW || (typeof window!=='undefined'?window.innerWidth:900);
+    const editH=Math.max(168, Math.min(Math.round(visibleH), Math.round(layoutH*.48)));
+    v.playersKeyboardOpen=isPlayers && S.keyboardOpen && !!focusedPlayer;
+    v.showPortraitEntryButton=isPlayers && !S.portraitTextEntry;
+    v.portraitTextEntry=S.portraitTextEntry;
+    v.onStartPortraitEntry=()=>this.startPortraitTextEntry();
+    v.onFinishPortraitEntry=()=>this.finishPortraitTextEntry();
+    v.playersKeyboardOverlayStyle=this.css(`position:fixed;left:0;right:0;top:${Math.round(S.viewTop||0)}px;height:${editH}px;z-index:64;display:flex;align-items:center;justify-content:center;padding:12px 18px;background:radial-gradient(120% 90% at 12% -10%,rgba(255,45,149,.24),transparent 58%),radial-gradient(120% 90% at 100% 115%,rgba(0,229,255,.18),transparent 58%),rgba(11,7,19,.97);box-shadow:0 20px 80px rgba(0,0,0,.6);pointer-events:none;overflow:hidden`);
+    v.playersKeyboardPanelStyle=this.css(`width:min(${Math.max(280,Math.min(620,Math.round(visibleW-38)))}px,100%);display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:12px;pointer-events:auto`);
+    v.playersKeyboardTitleStyle=this.css(`font-family:'Unbounded';font-weight:700;font-size:clamp(18px,4.8vh,26px);letter-spacing:-.5px;color:#f5f0ff;line-height:1`);
+    v.playersKeyboardSubtitleStyle=this.css(`margin-top:5px;color:#a99fc4;font-size:10px;letter-spacing:4px;text-transform:uppercase`);
+    v.playersKeyboardInputWrapStyle=this.css(`width:100%;height:66px;display:flex;align-items:center;gap:12px;background:rgba(23,16,42,.82);border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:8px 12px;backdrop-filter:blur(8px);box-shadow:0 14px 42px rgba(0,0,0,.42)`);
+    v.focusedPlayerId=focusedPlayer?focusedPlayer.id:'';
+    v.focusedPlayerName=focusedPlayer?focusedPlayer.name:'';
+    v.focusedIdxLabel=focusedPlayer?String(focusedIdx+1):'';
+    v.focusedPlayerLabel=focusedPlayer?t('playerFallback',{n:focusedIdx+1}):'';
+    v.focusedCircleStyle=focusedPlayer?this.css(`width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#0b0713;background:${this.pcolor(focusedIdx)};flex:none`):{};
+    v.focusedNameInputStyle=this.css(`flex:1;min-width:0;height:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:0 16px;color:#f5f0ff;font-family:'Space Grotesk',system-ui,sans-serif;font-size:clamp(22px,7.2vh,34px);font-weight:700;line-height:1;text-align:center;outline:none;caret-color:#ffd23f`);
+    v.focusedPlayerInput=(e)=>{ if(focusedPlayer) this.setName(focusedPlayer.id, e.target.value); };
+    v.focusedPlayerFocus=()=>{ if(focusedPlayer) this.focusPlayer(focusedPlayer.id); };
+    v.focusedPlayerBlur=()=>{ if(focusedPlayer) this.blurPlayer(focusedPlayer.id); };
+    v.focusedPlayerKeyDown=(e)=>this.handlePlayerKeyDown(e);
+    v.onAdd=()=>this.addPlayer();
+    v.onBack=()=>{
+      if(S.portraitTextEntry) this.setTextEntryOrientation('landscape');
+      this.setState({screen:'setup', activePlayerId:null, keyboardOpen:false, portraitTextEntry:false});
+    };
+    v.canStart=S.players.length>=3 && (S.sessionMode==='local' || S.players.every(p=>p.name.trim()));
+    v.onStart=()=>this.start();
+    v.startStyle=this.css(`flex:none;font-family:'Unbounded';font-weight:700;font-size:15px;padding:11px 40px;border-radius:14px;border:none;cursor:${v.canStart?'pointer':'not-allowed'};color:#fff;background:${v.canStart?'linear-gradient(92deg,#ff2d95,#ffd23f)':'rgba(255,255,255,.1)'};opacity:${v.canStart?'1':'.5'};box-shadow:${v.canStart?'0 12px 34px rgba(255,45,149,.4)':'none'}`);
+    const mDob=S.drinkMode==='double';
+    v.modeIsDouble=mDob; v.modeIsLinear=!mDob;
+    v.modeNote=mDob?t('modeDoubleNote'):t('modeLinearNote');
+    const dEs=S.deckType==='espanola';
+    v.deckIsEs=dEs; v.deckIsFr=!dEs;
+    v.deckNote=dEs?t('spanishDeckNote'):t('frenchDeckNote');
+
+    // MEMORIA
+    const remoteMemory=S.sessionMode==='online'&&isMemorize;
+    const memoryIndex=remoteMemory?this.roomPlayerIndex():S.memIdx;
+    if(isMemorize && S.playersG[memoryIndex]){
+      const memoryReady=remoteMemory&&!!((S.memReady||[])[memoryIndex]);
+      v.memName=S.playersG[memoryIndex].name;
+      v.memProgress=remoteMemory?(memoryReady?'Esperando a los demás jugadores':'Tus cartas privadas') : t('playerProgress',{current:memoryIndex+1,total:S.playersG.length});
+      v.memPassText=remoteMemory?(memoryReady?'La partida empezará cuando todos estén listos':'Estas cartas solo las ves tú'):t('passPhoneLabel');
+      v.memReveal=S.memReveal; v.memHidden=!S.memReveal;
+      v.memCards= S.memReveal ? (S.hands[memoryIndex]||[]).map(c=>({rank:(_es?'':c.rank), suit:c.suit, suitStyle:suitBig, center:(_es?this.spanishInterior(c,148):this.cardCenter(c.rank,c.suit,148,false)), style:this.bigCard(148,true,false,this.rankColor(c.color),_es)})) : [];
+      v.memCanReveal=!memoryReady;
+      v.memWaiting=memoryReady; v.memWaitingText='✓ Listo. Esperando a los demás…';
+      v.onMemReveal=()=>{ if(!memoryReady) this.setState({memReveal:true}); };
+      v.onMemDone=()=>this.memDone();
+      v.memCanBack = !remoteMemory && memoryIndex===0 && !S.memReveal;
+      v.onMemBack=()=>this.setState({screen:'players'});
+    } else { v.memName=''; v.memProgress=''; v.memPassText=t('passPhoneLabel'); v.memReveal=false; v.memHidden=true; v.memCards=[]; v.memCanReveal=false; v.memWaiting=false; v.memWaitingText=''; v.onMemReveal=()=>{}; v.onMemDone=()=>{}; v.memCanBack=false; v.onMemBack=()=>{}; }
+
+    // JUEGO
+    if(isPlay && S.rows.length){
+      const r=S.cur.r;
+      v.curLevel=S.rows.length - r;
+      v.curDrinks=this.rowDrinks(r);
+      v.modeChip=S.drinkMode==='double'?t('modeChipDouble'):t('modeChipLinear');
+      v.filaBadgeStyle=this.css(`font-weight:700;font-size:13px;color:#0b0713;background:${accent};padding:5px 14px;border-radius:20px;box-shadow:0 0 16px ${accent}66`);
+      v.stageHint = S.phase==='flip' ? t('stageFlipHint') : (S.flippedCard?t('stageCardShown',{rank:S.flippedCard.rank,suit:S.flippedCard.suitName||S.flippedCard.suit}):'');
+      const rowCards=S.rows[r]||[]; const n=rowCards.length;
+      const _sheetPhase = S.phase!=='flip' && S.phase!=='newcard';
+      const _sheet = _sheetPhase && S.sheetShown;
+      const _baseW = n>=5?98:(n===4?112:(n===3?130:(n===2?148:170)));
+      const _winHEarly = S.winH || (typeof window!=='undefined' ? window.innerHeight : 480);
+      // Cuando el cartel ocupa el 50% de abajo, las cartas de arriba deben ocupar el 57% de alto del 50% restante.
+      const _target = _sheet ? Math.round((_winHEarly*0.5*0.57)/1.42) : _baseW;
+      v.titleGameStyle=this.css(`font-family:'Unbounded';font-weight:700;font-size:${Math.round(_winHEarly*0.5*0.15)}px;letter-spacing:1px;background:linear-gradient(92deg,#ff2d95,#ffd23f 55%,#00e5ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 22px rgba(255,45,149,.35))`);
+      // Encoge las cartas para que la fila entera quepa aunque la pantalla sea estrecha (p.ej. iPhone SE).
+      const _baseGap = 14, _sidebar = 198, _pad = 14;
+      const _winW = S.winW || (typeof window!=='undefined' ? window.innerWidth : 940);
+      const _avail = Math.max(1, _winW - _sidebar - _pad*2 - 6);
+      const _gap = n>1 ? Math.max(0, Math.min(_baseGap, Math.floor((_avail - n*18) / (n-1)))) : 0;
+      const _maxFit = n>0 ? Math.floor((_avail - (n-1)*_gap) / n) : _target;
+      const w = Math.max(1, Math.min(_target, _maxFit));
+      // Ancho disponible dentro de la tarjeta inferior (sheet), para que las cartas chicas (reveal/resultado) siempre quepan.
+      const _sheetInnerW = Math.min(560, _winW - _sidebar - 60) - 36;
+      const _winH = S.winH || (typeof window!=='undefined' ? window.innerHeight : 480);
+      // Alto disponible dentro del sheet (50% de la pantalla) restando cabecera/textos, para que la carta no se corte.
+      const _sheetInnerH = _winH*0.5 - 100;
+      const _revealW = Math.max(46, Math.min(68, Math.floor((_sheetInnerW - 14) / 2), Math.floor(_sheetInnerH / 1.42)));
+      const _resultW = Math.max(40, Math.min(96, _sheetInnerW, Math.floor((_sheetInnerH - 20) / 1.42)));
+      const _titleReserve = Math.round(_winHEarly*0.5*0.15) + 20;
+      v.stageColStyle=this.css(`flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:${_sheet?6:16}px;padding:${_sheet?_titleReserve+'px 14px 6px':'14px'};position:relative;overflow:hidden`);
+      v.activeRowStyle=this.css(`display:flex;gap:${_gap}px;align-items:center;flex-wrap:nowrap;justify-content:center;width:100%;max-width:100%;overflow:visible`);
+      v.activeCards=rowCards.map((c,ci)=>{ const glow=S.phase==='flip'&&ci===S.cur.c; const cornerFs=Math.max(7, Math.round(w*0.18)); const cornerX=Math.max(3, Math.round(w*0.09)); const cornerY=Math.max(3, Math.round(w*0.06)); const backFs=Math.max(12, Math.round(w*0.27)); return { faceUp:c.faceUp, faceDown:!c.faceUp, rank:(_es?'':c.rank), suit:c.suit, suitStyle:suitBig, center:(_es?this.spanishInterior(c,w):this.cardCenter(c.rank,c.suit,w,false)), style:this.bigCard(w,c.faceUp,glow,this.rankColor(c.color),_es), cornerStyle:this.css(`position:absolute;top:${cornerY}px;left:${cornerX}px;font-weight:800;font-size:${cornerFs}px`), cornerBottomStyle:this.css(`position:absolute;bottom:${cornerY}px;right:${cornerX}px;font-weight:800;font-size:${cornerFs}px;transform:rotate(180deg)`), backSymbolStyle:this.css(`font-family:'Unbounded';font-weight:800;font-size:${backFs}px;opacity:.55`), onClick: glow?()=>this.flipNext():null }; });
+      v.miniRows=S.rows.map((row,i)=>({
+        wrapStyle:this.css(`display:flex;gap:4px;justify-content:center;padding:3px 4px;border-radius:6px;`+(i===r?`background:rgba(255,210,63,.12);box-shadow:0 0 0 1px rgba(255,210,63,.45)`:``)),
+        cards: row.map((c,ci)=>{ const glow=S.phase==='flip'&&i===r&&ci===S.cur.c; const st = c.faceUp?`background:#efe8ff;color:${this.rankColor(c.color)};`:`background:#2a1852;color:transparent;border:1px solid rgba(255,255,255,.08);`; let content=null; if(c.faceUp){ const suitEl=_es?React.createElement('svg',{viewBox:'0 0 100 100',style:{width:'9px',height:'9px'}},React.createElement('use',{href:c.sym})):React.createElement('span',{style:{fontSize:'9px',lineHeight:1}},c.suit); content=React.createElement('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',lineHeight:1,gap:'1px'}},React.createElement('span',{style:{fontSize:'9px',fontWeight:800,lineHeight:1}},c.rank),suitEl); } return { content, style:this.css(`width:20px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex:none;`+st+(glow?`box-shadow:0 0 0 2px #ffd23f;`:``)) }; })
+      }));
+      const displayTally=this.roomEventTally();
+      const maxT=Math.max(1, ...displayTally);
+      v.scores=S.playersG.map((p,i)=>({ name:p.name, drinks:displayTally[i]||0, dotStyle:this.css(`width:9px;height:9px;border-radius:50%;flex:none;background:${this.pcolor(i)};`), barStyle:this.css(`height:100%;border-radius:4px;width:${Math.round((displayTally[i]||0)/maxT*100)}%;background:linear-gradient(90deg,#ff2d95,#ffd23f)`) }));
+
+      const memberName=(id)=>{ const member=(S.roomMembers||[]).find((item)=>item.id===id); return member?member.name:'Jugador'; };
+      const roomEvents=(S.roomEvents||[]).slice(-8).reverse();
+      const pendingRoomEvent=onlineRoomPlay ? roomEvents.find((event)=>event.status==='pending'&&event.targetId===S.roomMemberId) : null;
+      v.onlineActivity=onlineRoomPlay&&roomEvents.length>0;
+      v.onlineEvents=roomEvents.map((event)=>{
+        const sender=memberName(event.senderId), target=memberName(event.targetId);
+        let text=`${sender} → ${target}: ${event.drinks} 🍺`;
+        if(event.status==='pending') text+=' · esperando respuesta';
+        else if(event.status==='accepted') text+=` · ${target} acepta`;
+        else if(event.status==='truth') text+=` · era verdad: ${target} bebe doble`;
+        else if(event.status==='lie') text+=` · era mentira: ${sender} bebe doble`;
+        return {text};
+      });
+      v.onlineResponse=!!pendingRoomEvent;
+      v.onlineResponseTitle=pendingRoomEvent?`${memberName(pendingRoomEvent.senderId)} te envía ${pendingRoomEvent.drinks} 🍺`:'';
+      v.onlineResponsePrompt=pendingRoomEvent?`${memberName(pendingRoomEvent.senderId)} dice tener un ${pendingRoomEvent.rank}. ¿Le crees?`:'';
+      v.onOnlineAccept=()=>{ if(pendingRoomEvent) this.respondToRoomDrink(pendingRoomEvent.id,'accept'); };
+      v.onOnlineChallenge=()=>{ if(pendingRoomEvent) this.respondToRoomDrink(pendingRoomEvent.id,'challenge'); };
+      v.onlineCompose=onlineRoomPlay&&S.phase!=='flip'&&S.sheetShown&&!pendingRoomEvent;
+      v.sheetOpen=onlineRoomPlay ? !!(pendingRoomEvent||S.sheetShown) : (_sheetPhase&&S.sheetShown);
+      v.showSendBtn=onlineRoomPlay ? (S.phase!=='flip'&&!pendingRoomEvent&&!S.sheetShown) : (_sheetPhase&&!S.sheetShown);
+      v.sendBtnLabel=S.phase==='claim'?t('sendDrinksLabel'):t('continueMoveLabel');
+      v.onSendDrinks=()=>this.setState({sheetShown:true});
+      v.onMinimize=()=>this.setState({sheetShown:false});
+      v.showOnlineNextCard=onlineRoomPlay&&S.phase!=='flip'&&!pendingRoomEvent&&!S.sheetShown;
+      v.onOnlineNextCard=()=>this.advance();
+      v.showBackBtn = S.phase==='flip' && !!S.prevState;
+      v.onGoBack=()=>this.goBack();
+      v.phaseNewCard=S.phase==='newcard';
+      v.newCardName= S.claimer!=null? S.playersG[S.claimer].name : '';
+      v.newCardReveal=S.newCardReveal; v.newCardHidden=!S.newCardReveal;
+      const ncc=(S.claimer!=null && S.revealedIdx!=null && S.hands[S.claimer])? S.hands[S.claimer][S.revealedIdx] : null;
+      v.newCardObj= ncc ? {rank:ncc.rank, suit:ncc.suit, suitStyle:suitBig, style:this.bigCard(96,true,false,this.rankColor(ncc.color))} : {rank:'',suit:'',suitStyle:{},style:{}};
+      const _nhand=(S.claimer!=null && S.hands[S.claimer]) ? S.hands[S.claimer] : [];
+      v.newCardSlots=_nhand.map((c,idx)=>{ const isNew=idx===S.revealedIdx; return {
+        faceUp:isNew, faceDown:!isNew, rank:(_es?'':c.rank), suit:c.suit, suitStyle:suitBig, center:(_es?this.spanishInterior(c,90):this.cardCenter(c.rank,c.suit,90,false)),
+        label:isNew?t('newCardSlotNew'):t('newCardSlotSame'),
+        labelStyle:this.css(isNew?`color:#00e5ff;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase`:`color:#7a7099;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase`),
+        style:this.bigCard(90,isNew,false,this.rankColor(c.color),_es) }; });
+      v.onNewCard=()=>this.newCard();
+      v.onNewCardReveal=()=>this.setState({newCardReveal:true});
+      v.onNewCardDone=()=>this.newCardDone();
+      v.phaseClaim=!onlineRoomPlay&&S.phase==='claim'; v.phaseTarget=!onlineRoomPlay&&S.phase==='target'; v.phaseRespond=!onlineRoomPlay&&S.phase==='respond'; v.phaseReveal=!onlineRoomPlay&&S.phase==='reveal'; v.phaseResult=!onlineRoomPlay&&S.phase==='result';
+      v.claimerName= S.claimer!=null? S.playersG[S.claimer].name : '';
+      v.targetName= S.target!=null? S.playersG[S.target].name : '';
+      const fc=S.flippedCard||{};
+      v.flipRank=fc.rank||''; v.flipSuit= _es ? (fc.sym?React.createElement('svg',{viewBox:'0 0 100 100',style:{width:'20px',height:'20px',display:'inline-block',verticalAlign:'-4px',marginLeft:'4px'}},React.createElement('use',{href:fc.sym})):'') : (fc.suit||'');
+      v.flipColorStyle=this.css(`color:${fc.bright||fc.color||'#fff'}`);
+      v.claimPrompt=t('claimPrompt',{rank:v.flipRank,drinks:v.curDrinks});
+      v.targetTitle=t('targetTitle',{name:v.claimerName,drinks:v.curDrinks});
+      v.respondTitle=t('respondTitle',{name:v.targetName,drinks:v.curDrinks});
+      v.respondPrompt=t('respondPrompt',{claimer:v.claimerName,rank:v.flipRank});
+      v.drinkButtonLabel=t('drinkButton',{drinks:v.curDrinks});
+      v.revealTitle=t('revealTitle',{name:v.claimerName});
+      v.revealPrompt=t('revealPrompt',{rank:v.flipRank});
+      v.newCardButtonLabel=t('newCardButton',{name:v.claimerName});
+      const optStyle=this.css('display:flex;align-items:center;gap:8px;max-width:100%;flex:0 0 auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#f5f0ff;padding:7px 15px 7px 7px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;text-align:left');
+      const circle=(i)=>this.css(`width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#0b0713;background:${this.pcolor(i)};flex:none`);
+      const myRoomIndex=this.roomPlayerIndex();
+      v.onlineSendTitle=S.flippedCard?`Envía ${S.flippedCard.drinks} 🍺`:'Enviar tragos';
+      v.onlineSendPrompt=S.flippedCard?`Ha salido un ${S.flippedCard.rank}. Elige a quién se los mandas.`:'';
+      v.onlineTargetOptions=(S.roomMembers||[]).map((p,i)=>({ name:p.name, initial:(String(p.name||'?').trim()[0]||'?').toUpperCase(), onClick:()=>this.sendRoomDrink(p.id), style:optStyle, circleStyle:circle(i) })).filter((_,i)=>i!==myRoomIndex);
+      v.claimOptions=S.playersG.map((p,i)=>({ name:p.name, initial:(p.name.trim()[0]||'?').toUpperCase(), onClick:()=>this.claim(i), style:optStyle, circleStyle:circle(i) }));
+      v.onNobody=()=>this.advance();
+      v.onNextCard=()=>this.advance();
+      v.targetOptions=S.playersG.map((p,i)=>({ i, name:p.name, initial:(p.name.trim()[0]||'?').toUpperCase(), onClick:()=>this.target(i), style:optStyle, circleStyle:circle(i) })).filter(o=>o.i!==S.claimer);
+      v.onBackClaim=()=>this.setState({phase:'claim', claimer:null});
+      v.onDrink=()=>this.drink();
+      v.onLie=()=>this.setState({phase:'reveal', revealPeekIdx:null});
+      v.revealCards=(S.claimer!=null && S.hands[S.claimer]) ? S.hands[S.claimer].map((c,idx)=>{
+        const peeked=S.revealPeekIdx===idx; const pending=S.revealPeekIdx!=null;
+        return {
+          faceUp:peeked, faceDown:!peeked,
+          rank:(_es?'':c.rank),
+          center: peeked ? (_es?this.spanishInterior(c,_revealW):this.cardCenter(c.rank,c.suit,_revealW,false)) : null,
+          onClick: pending ? null : ()=>this.revealPick(idx),
+          style:this.bigCard(_revealW, peeked, !pending, peeked?this.rankColor(c.color):undefined, _es, 5)
+        };
+      }) : [];
+      const res=S.result;
+      if(res&&res.kind==='drink'){
+        v.resultTitle=t('drinkResultTitle');
+        v.resultText=t('drinkResultText',{name:res.targetName,drinks:res.drinks});
+      } else if(res&&res.kind==='truth'){
+        v.resultTitle=t('truthResultTitle');
+        v.resultText=t('truthResultText',{rank:res.rank,name:res.targetName,drinks:res.drinks});
+      } else if(res&&res.kind==='lie'){
+        v.resultTitle=t('lieResultTitle');
+        v.resultText=t('lieResultText',{shown:res.shownRank,expected:res.expectedRank,name:res.claimerName,drinks:res.drinks});
+      } else {
+        v.resultTitle=res?res.title:'';
+        v.resultText=res?res.text:'';
+      }
+      v.resultCardShown=!!(res&&res.card);
+      v.resultCard=(res&&res.card) ? { rank:(_es?'':res.card.rank), suit:res.card.suit, suitStyle:suitSm, center:(_es?this.spanishInterior(res.card,_resultW):this.cardCenter(res.card.rank,res.card.suit,_resultW,false)), style:this.bigCard(_resultW,true,false,this.rankColor(res.card.color),_es) } : { rank:'', suit:'', suitStyle:{}, style:{} };
+      v.onContinue=()=>this.setState({phase:'claim', claimer:null, target:null, result:null});
+      v.resultDrink=!v.resultCardShown;
+    } else {
+      Object.assign(v,{ stageColStyle:this.css('flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:14px;position:relative'), activeRowStyle:this.css('display:flex;gap:14px;align-items:center;justify-content:center;width:100%;max-width:100%'), curLevel:0,curDrinks:0,modeChip:'',filaBadgeStyle:{},stageHint:'',activeCards:[],miniRows:[],scores:[],sheetOpen:false,showSendBtn:false,sendBtnLabel:'',onSendDrinks:()=>{},onMinimize:()=>{},showOnlineNextCard:false,onOnlineNextCard:()=>{},showBackBtn:false,onGoBack:()=>{},onlineActivity:false,onlineEvents:[],onlineResponse:false,onlineResponseTitle:'',onlineResponsePrompt:'',onOnlineAccept:()=>{},onOnlineChallenge:()=>{},onlineCompose:false,onlineSendTitle:'',onlineSendPrompt:'',onlineTargetOptions:[],phaseClaim:false,phaseTarget:false,phaseRespond:false,phaseReveal:false,phaseResult:false,flipRank:'',flipSuit:'',flipColorStyle:{},claimPrompt:'',targetTitle:'',respondTitle:'',respondPrompt:'',drinkButtonLabel:'',revealTitle:'',revealPrompt:'',newCardButtonLabel:'',claimOptions:[],onNobody:()=>{},onNextCard:()=>{},claimerName:'',targetName:'',targetOptions:[],onBackClaim:()=>{},onDrink:()=>{},onLie:()=>{},revealCards:[],resultTitle:'',resultText:'',resultCardShown:false,resultCard:{rank:'',suit:'',suitStyle:{},style:{}},onContinue:()=>{},resultDrink:false,phaseNewCard:false,newCardName:'',newCardReveal:false,newCardHidden:true,newCardObj:{rank:'',suit:'',suitStyle:{},style:{}},newCardSlots:[],onNewCard:()=>{},onNewCardReveal:()=>{},onNewCardDone:()=>{} });
+    }
+
+    // FIN
+    if(isOver){
+      const displayTally=this.roomEventTally();
+      const arr=S.playersG.map((p,i)=>({name:p.name, drinks:displayTally[i]||0})).sort((a,b)=>b.drinks-a.drinks);
+      v.finalRanking=arr.map((rr,idx)=>({ name:rr.name, drinks:rr.drinks, tag: idx===0?'\ud83e\udd74':(idx===1?'\ud83e\udd48':(idx===2?'\ud83e\udd49':'\u00b7')), rowStyle:this.css(`display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-radius:12px;background:${idx===0?'rgba(255,45,149,.14)':'rgba(255,255,255,.05)'};border:1px solid ${idx===0?'rgba(255,45,149,.4)':'rgba(255,255,255,.08)'}`) }));
+    } else { v.finalRanking=[]; }
+    v.onRestart=()=>{ if(S.sessionMode==='online') this.stopRoomPolling(); this.setState({screen:'mode',sessionMode:'local',onlineStage:'choose',roomCode:'',roomMemberId:'',roomToken:'',roomMembers:[],roomEvents:[],roomVersion:0,roomOwner:false,roomStatus:''}); };
+
+    // MENÚ EN PARTIDA
+    v.menuOpen=S.menuOpen;
+    v.onMenuOpen=()=>this.setState({menuOpen:true});
+    v.onMenuClose=()=>this.setState({menuOpen:false});
+    v.onSheetTap=(e)=>{ e.stopPropagation(); };
+    v.onMenuSwipeStart=(event)=>{
+      const touch=event.touches&&event.touches[0];
+      this._menuSwipeStart=touch?{x:touch.clientX,y:touch.clientY}:null;
+    };
+    v.onMenuSwipeEnd=(event)=>{
+      const start=this._menuSwipeStart;
+      this._menuSwipeStart=null;
+      const touch=event.changedTouches&&event.changedTouches[0];
+      if(!start||!touch) return;
+      const deltaY=touch.clientY-start.y;
+      const deltaX=Math.abs(touch.clientX-start.x);
+      if(deltaY>=48&&deltaY>deltaX) this.setState({menuOpen:false,hamMenuOpen:false});
+    };
+    v.onMenuFinish=()=>this.setState({menuOpen:false, screen:'over'});
+    v.onMenuHome=()=>{ if(S.sessionMode==='online') this.stopRoomPolling(); this.setState({menuOpen:false, screen:'mode',sessionMode:'local',onlineStage:'choose',roomCode:'',roomMemberId:'',roomToken:'',roomMembers:[],roomEvents:[],roomVersion:0,roomOwner:false,roomStatus:''}); };
+
+    // MENÚ HAMBURGUESA (todas las pantallas)
+    v.showHamBtn = true;
+    v.hamMenuOpen = S.hamMenuOpen;
+    v.onHamOpen=()=> isPlay ? this.setState({menuOpen:true}) : this.setState({hamMenuOpen:true, hamView:'menu'});
+    v.onHamClose=()=>this.setState({hamMenuOpen:false});
+    v.onHamHow=()=>this.setState({hamView:'how'});
+    v.onHamPrivacy=()=>this.setState({hamView:'privacy'});
+    v.onHamBack=()=>this.setState({hamView:'menu'});
+    v.onHamLang=()=>this.setState({hamMenuOpen:false, langOpen:true});
+    v.showHamHome = !isMode;
+    v.onHamGoHome=()=>{ if(S.sessionMode==='online') this.stopRoomPolling(); this.setState({hamMenuOpen:false, hamView:'menu', screen:'mode',sessionMode:'local',onlineStage:'choose',roomCode:'',roomMemberId:'',roomToken:'',roomMembers:[],roomEvents:[],roomVersion:0,roomOwner:false,roomStatus:''}); };
+    v.hamViewMain = S.hamView==='menu';
+    v.hamViewHow = S.hamView==='how';
+    v.hamViewPrivacy = S.hamView==='privacy';
+    v.appVersion = 'v1.1.0';
+
+    // SELECTOR DE IDIOMA
+    v.showLangBtn = true;
+    v.langLabel = S.lang;
+    v.langOpen = S.langOpen;
+    v.onLangOpen = ()=>this.setState({langOpen:true});
+    v.onLangClose = ()=>this.setState({langOpen:false});
+    v.onSheetTap = (e)=>{ e.stopPropagation(); };
+    v.langOptions = this.LANGS.map(l=>{ const sel=l.code===S.lang; return {
+      code:l.code, name:l.name, flag:l.flag,
+      onClick:()=>this.pickLang(l.code),
+      style:this.css(`display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:12px 15px;border-radius:14px;cursor:pointer;font-family:inherit;color:#f5f0ff;`+(sel?`background:rgba(255,45,149,.14);border:1px solid rgba(255,45,149,.5)`:`background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)`)),
+      codeStyle:this.css(`font-size:12px;font-weight:800;letter-spacing:1px;color:${sel?'#ff6ab0':'#a99fc4'}`),
+      check: sel ? React.createElement('span',{style:{color:'#ff6ab0',fontWeight:800,fontSize:'16px',flex:'none',width:'18px',textAlign:'center'}},'\u2713') : React.createElement('span',{style:{width:'18px',flex:'none'}})
+    }; });
+
+    v.isApp = this.appMode;
+
+    return v;
+  }
+}
+</script>
+</body>
+</html>
